@@ -185,9 +185,9 @@ turtle.bye() # Close turtle window
 """
     modified_code += save_code
     
-    # print("\n--- Modified code to execute ---")
-    # print(modified_code)
-    # print("------------------------------\n")
+    print("\n--- Modified code to execute ---")
+    print(modified_code)
+    print("------------------------------\n")
 
     try:
         # Using a fresh globals/locals dict for each exec might be safer
@@ -197,7 +197,7 @@ turtle.bye() # Close turtle window
         exec(modified_code, global_namespace)
         
         # Brief pause for file system
-        time.sleep(0.5) 
+        time.sleep(2.5) 
 
         if not ps_filepath.exists() or ps_filepath.stat().st_size == 0:
             print(f"Error: PostScript file {ps_filepath.name} was not created or is empty.")
@@ -240,7 +240,7 @@ turtle.bye() # Close turtle window
             return False
         
         # Brief pause for file system
-        time.sleep(0.2) 
+        time.sleep(2.2) 
         if not png_filepath.exists() or png_filepath.stat().st_size == 0:
             print(f"Error: PNG file {png_filepath.name} was not created or is empty after conversion.")
             return False
@@ -311,10 +311,13 @@ def main():
             else:
                 generated_content.append(f"*Failed to generate image for {step_title}*\n\n")
                 print(f"  Failed to generate {png_filepath_abs.name}")
-            
+
+            # Sacrifice
+            generate_image_from_code(code, TEMP_PS_FILE, png_filepath_abs)
+
             # A small delay to help turtle reset between executions if necessary,
             # and to prevent overwhelming the system.
-            time.sleep(0.5) 
+            time.sleep(2.5) 
 
     with open(OUTPUT_MD_FILE, "w", encoding="utf-8") as f:
         f.write("".join(generated_content))

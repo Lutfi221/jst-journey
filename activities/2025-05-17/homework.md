@@ -1,10 +1,12 @@
 
-I've prepared three problems for you. Do them in the following order:
+I've prepared three problems for you.
+
+Before doing the problems, open the [Expected Turtle Art Results](./expected-results.md) document first. So you know what to make for each of the problem steps.
+
+Do the problems in the following order:
 
 1. [Spiraling Octagon](./spiraing-octagon.md)
 2. [Stars in the Sky](./stars-in-the-sky.md)
 3. [Chessboard](./chessboard.md)
-
-Once all homework is done, you can see the cheatsheet containing concepts from the activities you've just done.
 
 Good luck!
