@@ -5,7 +5,7 @@ Before doing the problems, open the [Expected Turtle Art Results](./expected-res
 
 Do the problems in the following order:
 
-1. [Spiraling Octagon](./spiraing-octagon.md)
+1. [Spiraling Octagon](./spiraling-octagon.md)
 2. [Stars in the Sky](./stars-in-the-sky.md)
 3. [Chessboard](./chessboard.md)
 
