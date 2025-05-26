@@ -62,7 +62,7 @@
 # You approach the cave...
 # It is dark and spooky...
 # A large dragon jumps out in front of you! He opens his jaws and...
-# Eats you and spends your robux!
+# Eats you and spends your robux!!
 # Do you want to play again? (yes or no)
 # no
 # ```
@@ -103,7 +103,7 @@
 # %% [markdown] id="dragon-functions-intro" slideshow={"slide_type": "slide"}
 # ## Incantations & Reusable Spells: Functions
 #
-# Functions are blocks of code that perform a specific task. We define them once and can "call" (use) them many times.
+# Functions are blocks of code that perform a specific task. We define them once and can "call" (use) them many times. A variable is defined (or created) the first time we assign a value to it using the assignment operator `=`.
 #
 # We've used built-in functions like `print()`, `input()`, `randint()`. Now, we'll create our own!
 
@@ -115,17 +115,13 @@
 # <img src="images/00064.jpeg" alt="Parts of a def statement" style="max-width: 70%; border: 1px solid grey; display: block; margin-left: auto; margin-right: auto;"/>
 # *Figure 5-2: Parts of a `def` statement*
 
-
 # %% slideshow={"slide_type": "fragment"}
-def displayIntro_example():  # Renamed for this example slide
-    print(
-        """You are in a land full of dragons. In front of you,
-you see two caves. In one cave, the dragon is friendly
-and will share his treasure with you. The other dragon
-is greedy and hungry, and will eat you on sight."""
-    )
+def displayIntro_example(): # Renamed for this example slide
+    print("You are in a land full of dragons. In front of you,")
+    print("you see two caves. In one cave, the dragon is friendly")
+    print("and will share his treasure with you. The other dragon")
+    print("is greedy and hungry, and will eat you on sight.")
     print()
-
 
 # To see it work, we would call displayIntro_example() in another cell.
 
@@ -134,12 +130,10 @@ is greedy and hungry, and will eat you on sight."""
 #
 # Defining a function doesn't run its code. You must *call* it:
 
-
 # %% slideshow={"slide_type": "fragment"}
 # This is a function definition
 def simpleGreeting():
     print("Welcome, brave adventurer!")
-
 
 # This is the function call (code inside simpleGreeting runs now)
 simpleGreeting()
@@ -159,25 +153,87 @@ simpleGreeting()
 #
 # **Correct:**
 
-
 # %% slideshow={"slide_type": "fragment"}
 def sayGoodbye():
-    print("Goodbye!")
+    print('Goodbye!')
 
+sayGoodbye() # Now Python knows the spell.
 
-sayGoodbye()  # Now Python knows the spell.
+# %% [markdown] id="dragon-function-exercise1" slideshow={"slide_type": "slide"}
+# ### ✨ Your Turn: Crafting Functions! ✨
+#
+# Time to practice! In your own Python IDE (like IDLE or Thonny), try writing the following two functions:
+#
+# 1.  **`giveCompliment()`**: This function should print a nice compliment to the screen. For example, "Your jaw is immaculate. You must have mewed everyday." or "Your aura so strong, my screen brightness just auto-adjusted to max.".
+# 2.  **`reciteIndonesianThemeSong()`**: This function should print a few lines from a well-known Indonesian patriotic song or theme. For example, the first few lines of "Garuda Pancasila":
+#     ```
+#     Garuda pancasila
+#     Akulah pendukungmu
+#     Patriot proklamasi
+#     Sedia berkorban untukmu
+#     ```
+#
+# After you've written them, make sure to **call** both functions to see them in action!
+
+# %% [markdown] id="dragon-function-exercise1-solution-intro" slideshow={"slide_type": "subslide"}
+# ### Solution: `giveCompliment()` and `reciteIndonesianThemeSong()`
+#
+# Here's one way you could have written those functions. Compare it with what you wrote!
+
+# %% slideshow={"slide_type": "fragment"}
+# Solution for giveCompliment()
+def giveCompliment():
+    print("Tobey Maguire got bit by a spider but you? it must have been a goat because you're the greatest of all time.")
+
+# Solution for reciteIndonesianThemeSong()
+def reciteIndonesianThemeSong():
+    print("Garuda pancasila")
+    print("Akulah pendukungmu")
+    print("Patriot proklamasi")
+    print("Sedia berkorban untukmu")
+
+# Calling the functions to test them
+print("Calling giveCompliment:")
+giveCompliment()
+print("\nCalling reciteIndonesianThemeSong:") # \n adds a newline for better separation
+reciteIndonesianThemeSong()
 
 # %% [markdown] id="dragon-multiline-strings" slideshow={"slide_type": "slide"}
 # ## Weaving Long Tales: Multiline Strings
 #
-# For text that spans multiple lines, use triple quotes (`'''` or `"""`).
+# For text that spans multiple lines, use triple quotes (`'''` or `"""`). This makes your code much cleaner than using many `print()` statements or `\n` new-line characters.
 
 # %% slideshow={"slide_type": "fragment"}
-intro_message = """This is a tale of ancient lore,
+intro_message = '''This is a tale of ancient lore,
 spread across several lines,
-telling of dragons and treasure galore."""
+telling of dragons and treasure galore.'''
 
 print(intro_message)
+
+# %% [markdown] id="dragon-function-exercise2" slideshow={"slide_type": "slide"}
+# ### ✨ Your Turn: Revisiting with Multiline Strings! ✨
+#
+# Remember the `reciteIndonesianThemeSong()` function you wrote earlier?
+#
+# Now, try to **revise** that function in your IDE. This time, use a **multiline string** to store and print the song lyrics, instead of using multiple `print()` statements.
+
+# %% [markdown] id="dragon-function-exercise2-solution-intro" slideshow={"slide_type": "subslide"}
+# ### Solution: `reciteIndonesianThemeSong()` with Multiline String
+#
+# Here's how you could revise the function using a multiline string:
+
+# %% slideshow={"slide_type": "fragment"}
+# Revised solution for reciteIndonesianThemeSong() using a multiline string
+def reciteIndonesianThemeSong_multiline():
+    song_lyrics = '''Garuda pancasila
+Akulah pendukungmu
+Patriot proklamasi
+Sedia berkorban untukmu'''
+    print(song_lyrics)
+
+# Calling the revised function
+print("Calling reciteIndonesianThemeSong_multiline:")
+reciteIndonesianThemeSong_multiline()
 
 # %% [markdown] id="dragon-while-loops" slideshow={"slide_type": "slide"}
 # ## Persistent Magic: `while` Loops
@@ -189,8 +245,8 @@ print(intro_message)
 count = 0
 print("Starting the count...")
 while count < 3:
-    print(f"Still counting... (count is {count})")
-    count = count + 1  # or count += 1
+    print("Still counting... (count is " + str(count) + ")") # Using str() to convert int to string for concatenation
+    count = count + 1 # or count += 1
 print("Done counting!")
 
 # %% [markdown] id="dragon-while-loops-choosecave" slideshow={"slide_type": "fragment"}
@@ -224,14 +280,32 @@ print("Done counting!")
 # | `False` | `True`  | `False` |
 # | `False` | `False` | `False` |
 #
-# Let's test it:
+# Let's test it with an age and height check for a theme park ride:
 
 # %% slideshow={"slide_type": "fragment"}
-print(f"True and True is: {True and True}")
-print(f"True and False is: {True and False}")
+min_age = 10
+min_height_cm = 120
 
-can_enter_ride = (120 < 150) and ("ticket" == "ticket")  # Height check and ticket check
-print(f"Can enter ride? {can_enter_ride}")
+current_age = 12
+current_height_cm = 130
+
+is_old_enough = (current_age >= min_age)
+is_tall_enough = (current_height_cm >= min_height_cm)
+
+can_enter_ride = is_old_enough and is_tall_enough
+
+print("Current age: " + str(current_age) + ", Minimum age: " + str(min_age))
+print("Is old enough? " + str(is_old_enough))
+print("Current height (cm): " + str(current_height_cm) + ", Minimum height (cm): " + str(min_height_cm))
+print("Is tall enough? " + str(is_tall_enough))
+print("Can enter ride? " + str(can_enter_ride))
+
+current_age_2 = 8 # Too young
+current_height_cm_2 = 125 # Tall enough
+can_enter_ride_2 = (current_age_2 >= min_age) and (current_height_cm_2 >= min_height_cm)
+print("\nSecond check (Age: " + str(current_age_2) + ", Height: " + str(current_height_cm_2) + ")")
+print("Can enter ride? " + str(can_enter_ride_2))
+
 
 # %% [markdown] id="dragon-or-operator" slideshow={"slide_type": "subslide"}
 # ### The `or` Operator
@@ -249,13 +323,13 @@ print(f"Can enter ride? {can_enter_ride}")
 # Example from `dragon.py` (line 36): `playAgain == 'yes' or playAgain == 'y'`
 
 # %% slideshow={"slide_type": "fragment"}
-print(f"True or False is: {True or False}")
-print(f"False or False is: {False or False}")
+print("True or False is: " + str(True or False))
+print("False or False is: " + str(False or False))
 
 has_potion = False
 has_spell = True
 can_fight_monster = has_potion or has_spell
-print(f"Can fight monster? {can_fight_monster}")
+print("Can fight monster? " + str(can_fight_monster))
 
 # %% [markdown] id="dragon-not-operator" slideshow={"slide_type": "subslide"}
 # ### The `not` Operator
@@ -269,10 +343,10 @@ print(f"Can fight monster? {can_fight_monster}")
 # | `False` | `True`  |
 
 # %% slideshow={"slide_type": "fragment"}
-print(f"not True is: {not True}")
+print("not True is: " + str(not True))
 is_daytime = False
 is_nighttime = not is_daytime
-print(f"Is it nighttime? {is_nighttime}")
+print("Is it nighttime? " + str(is_nighttime))
 
 # %% [markdown] id="dragon-evaluating-booleans" slideshow={"slide_type": "subslide"}
 # ### Evaluating Booleans in `chooseCave()`
@@ -304,7 +378,6 @@ print(f"Is it nighttime? {is_nighttime}")
 # ```
 # When `chooseCave()` is called (line 38: `caveNumber = chooseCave()`), the returned value (`'1'` or `'2'`) is stored in `caveNumber`.
 
-
 # %% [markdown] slideshow={"slide_type": "fragment"}
 # Here's a simpler example of a function that returns a value:
 # %% slideshow={"slide_type": "fragment"}
@@ -313,40 +386,67 @@ def getPassword():
     secret_password = "swordfish"
     return secret_password
 
-
 my_secret = getPassword()
-print(f"The function returned: {my_secret}")
+print("The function returned: " + my_secret)
+
+# %% [markdown] id="dragon-function-exercise3" slideshow={"slide_type": "slide"}
+# ### ✨ Your Turn: Returning a Value! ✨
+#
+# Let's create a function that returns a specific piece of information.
+#
+# In your IDE, write a function called `getIndependenceDay()`. This function should:
+# * Take no arguments.
+# * Return the date of Indonesia's Independence Day as a string (e.g., "17 Agustus").
+#
+# After writing the function, call it and print the returned value to check your work.
+
+# %% [markdown] id="dragon-function-exercise3-solution-intro" slideshow={"slide_type": "subslide"}
+# ### Solution: `getIndependenceDay()`
+#
+# Here's how you could write the `getIndependenceDay()` function:
+
+# %% slideshow={"slide_type": "fragment"}
+# Solution for getIndependenceDay()
+def getIndependenceDay():
+    indonesia_independence_day = "17 Agustus"
+    return indonesia_independence_day
+
+# Calling the function and printing its return value
+date_returned = getIndependenceDay()
+print("Indonesia's Independence Day is on: " + date_returned)
 
 # %% [markdown] id="dragon-scope" slideshow={"slide_type": "slide"}
 # ## Realms of Variables: Global vs. Local Scope
 #
-# * **Local Scope:** Variables created *inside* a function. They exist only while the function is running and are forgotten when it returns. (e.g., `cave` in `chooseCave()`)
-# * **Global Scope:** Variables created *outside* all functions. They exist for the entire program. (e.g., `playAgain` in `dragon.py`)
+# * A variable is **defined** (or created) the first time we assign a value to it using the assignment operator (`=`).
+# * **Local Scope:** Variables defined *inside* a function. They exist only while the function is running.
+#     * Once the function finishes executing, its local variables **disappear** and their values are forgotten.
+# * **Global Scope:** Variables defined *outside* all functions. They exist for the entire program.
 #
-# A local variable can have the same name as a global one, but they are separate!
+# The main usefulness of having local and global scopes is to **prevent variable conflicts**. You can use the same variable name inside a function (local) as outside (global) without them interfering with each other. Python will treat them as two separate variables. This helps keep code in different parts of your program from accidentally changing each other's data.
 
 # %% [markdown] id="dragon-scope-example" slideshow={"slide_type": "subslide"}
 # ### Scope Example: The Tale of Two `spam`s
 #
-# Observe how the `spam` variable behaves inside and outside the `bacon()` function.
-
+# Observe how the `spam` variable behaves. `spam` inside `bacon()` is a local variable, different from the global `spam`.
 
 # %% slideshow={"slide_type": "fragment"}
 def bacon():
-    spam = 99  # This is a LOCAL spam
-    print(f"Inside bacon(), spam is: {spam}")
+    spam = 99      # This 'spam' is LOCAL to bacon(). It's defined here.
+    print("Inside bacon(), local spam is: " + str(spam))
 
+spam = 42          # This 'spam' is GLOBAL. It's defined here.
+print("Before calling bacon(), global spam is: " + str(spam))
 
-spam = 42  # This is a GLOBAL spam
-print(f"Before calling bacon(), global spam is: {spam}")
-bacon()  # Calls bacon(), which prints its local spam
-print(f"After calling bacon(), global spam is still: {spam}")
+bacon()            # Calls bacon(). The local 'spam' (99) is used. The global 'spam' (42) is unaffected.
+
+print("After calling bacon(), global spam is still: " + str(spam)) # Global 'spam' remains 42. The local 'spam' from bacon() is gone.
 
 # %% [markdown] id="dragon-parameters" slideshow={"slide_type": "slide"}
 # ## Passing Messages: Function Parameters & Arguments
 #
-# A **parameter** is a variable in a function definition that receives a value when the function is called.
-# An **argument** is the actual value passed to the function.
+# A **parameter** is a variable in a function definition that receives a value when the function is called. Think of it as a placeholder in the function.
+# An **argument** is the actual value that is passed to the function when it is called.
 #
 # ```python
 # # 'chosenCave' is a PARAMETER in the original game's checkCave function
@@ -354,24 +454,49 @@ print(f"After calling bacon(), global spam is still: {spam}")
 # #     print('You chose cave number: ' + chosenCave)
 # #     # ... more code ...
 # ```
-# When `checkCave(caveNumber)` is called (line 39 in `dragon.py`), the value in `caveNumber` is the **argument**.
+# When `checkCave(caveNumber)` is called (line 39 in `dragon.py`), the value stored in the `caveNumber` variable is the **argument** passed to the `chosenCave` parameter.
 
 # %% [markdown] id="dragon-parameters-example" slideshow={"slide_type": "subslide"}
 # ### Parameters Example: `sayHello`
 #
-# The `sayHello` function takes one parameter, `name`.
-
+# The `sayHello` function takes one parameter, `name_param`.
 
 # %% slideshow={"slide_type": "fragment"}
-def sayHello(name_param):  # 'name_param' is a parameter
-    message = f"Hello, {name_param}. Your name has {len(name_param)} letters."
+def sayHello(name_param): # 'name_param' is a parameter
+    message = "Hello, " + name_param + ". Your name has " + str(len(name_param)) + " letters."
     print(message)
 
+sayHello('Alice')     # 'Alice' is an argument
+sayHello('Bob')       # 'Bob' is an argument
+wizard_name = 'Gandalf'
+sayHello(wizard_name) # The value of wizard_name ('Gandalf') is an argument
 
-sayHello("Alice")  # 'Alice' is an argument
-sayHello("Bob")  # 'Bob' is an argument
-wizard_name = "Gandalf"
-sayHello(wizard_name)  # The value of wizard_name ('Gandalf') is an argument
+# %% [markdown] id="dragon-function-exercise4" slideshow={"slide_type": "slide"}
+# ### ✨ Your Turn: Functions with Parameters! ✨
+#
+# Now it's time to create a function that accepts an argument.
+#
+# In your IDE, write a function called `congratulate(name)`.
+# * This function should take one parameter, `name`.
+# * Inside the function, it should print a congratulatory message to that person for a special occasion. For example, if the name is "Budi", it could print "Selamat, Budi, atas pencapaian luar biasamu!" (Congratulations, Budi, on your outstanding achievement!).
+#
+# After writing it, call the function a few times with different names as arguments.
+
+# %% [markdown] id="dragon-function-exercise4-solution-intro" slideshow={"slide_type": "subslide"}
+# ### Solution: `congratulate(name)`
+#
+# Here's one way to write the `congratulate(name)` function:
+
+# %% slideshow={"slide_type": "fragment"}
+# Solution for congratulate(name)
+def congratulate(name):
+    occasion_message = "atas mewing streak kamu!"
+    print("Selamat, " + name + ", " + occasion_message)
+
+# Calling the function with different arguments
+congratulate("Ani")
+congratulate("Eko")
+congratulate("Siti")
 
 # %% [markdown] id="dragon-game-results" slideshow={"slide_type": "slide"}
 # ## Building Suspense: Displaying Game Results with `time.sleep()`
@@ -380,13 +505,13 @@ sayHello(wizard_name)  # The value of wizard_name ('Gandalf') is an argument
 # Shorter pauses are used in this demo cell.
 
 # %% slideshow={"slide_type": "fragment"}
-import time  # Make sure time is imported for this cell
+import time # Make sure time is imported for this cell
 
-print("You approach the cave...")
+print('You approach the cave...')
 time.sleep(0.5)  # Pause for 0.5 seconds
-print("It is dark and spooky...")
+print('It is dark and spooky...')
 time.sleep(0.5)  # Pause for 0.5 seconds
-print("A large dragon jumps out in front of you! He opens his jaws and...")
+print('A large dragon jumps out in front of you! He opens his jaws and...')
 time.sleep(0.5)  # Pause for 0.5 seconds
 print("...the story continues!")
 
@@ -397,35 +522,36 @@ print("...the story continues!")
 #
 # ```python
 # # Snippet from checkCave(chosenCave):
-# # friendlyCave = random.randint(1, 2)
+# # friendlyCave_num = random.randint(1, 2)
 # #
-# # if chosenCave == str(friendlyCave):
+# # if chosenCave == str(friendlyCave_num):
 # #     print('Gives you his treasure!')
 # # else:
-# #     print('Eats you and spends your robux!')
+# #     print('Eats you and spends your robux!!')
 # ```
 # * `random.randint(1, 2)`: Randomly picks 1 or 2.
-# * `str(friendlyCave)`: Converts the integer `friendlyCave` to a string. This is crucial because `chosenCave` (from `input()`) is a string.
+# * `str(friendlyCave_num)`: Converts the integer `friendlyCave_num` to a string. This is crucial because `chosenCave` (from `input()`) is a string.
 
 # %% [markdown] slideshow={"slide_type": "fragment"}
 # Let's simulate this choice:
 # %% slideshow={"slide_type": "fragment"}
-import random  # Ensure random is imported
+import random # Ensure random is imported
 
 # Simulate player's choice
-player_chosen_cave_str = random.choice(["1", "2"])  # Player randomly picks '1' or '2'
-print(f"Player chose cave: {player_chosen_cave_str}")
+possible_choices = ['1', '2']
+player_chosen_cave_str = random.choice(possible_choices) # Player randomly picks '1' or '2'
+print("Player chose cave: " + player_chosen_cave_str)
 
 # Determine the friendly dragon's cave
 friendly_dragon_cave_int = random.randint(1, 2)
 friendly_dragon_cave_str = str(friendly_dragon_cave_int)
-print(f"The friendly dragon is in cave: {friendly_dragon_cave_str}")
+print("The friendly dragon is in cave: " + friendly_dragon_cave_str)
 
 # Check the outcome
 if player_chosen_cave_str == friendly_dragon_cave_str:
-    print("Gives you his treasure!")
+    print('Gives you his treasure!')
 else:
-    print("Eats you and spends your robux!")
+    print('Eats you and spends your robux!!')
 
 # %% [markdown] id="dragon-game-loop" slideshow={"slide_type": "slide"}
 # ## The Adventure Continues: The Main Game Loop
@@ -460,44 +586,36 @@ else:
 import random
 import time
 
-
 def displayIntro():
-    print(
-        """You are in a land full of dragons. In front of you,
+    print('''You are in a land full of dragons. In front of you,
 you see two caves. In one cave, the dragon is friendly
 and will share his treasure with you. The other dragon
-is greedy and hungry, and will eat you on sight."""
-    )
+is greedy and hungry, and will eat you on sight.''')
     print()
 
-
 def chooseCave():
-    cave = ""
+    cave = ''
     # Input validation loop
-    while cave != "1" and cave != "2":
-        print("Which cave will you go into? (1 or 2)")
-        cave = input()  # Jupyter will show an input box here if run interactively
+    while cave != '1' and cave != '2':
+        print('Which cave will you go into? (1 or 2)')
+        cave = input() # Jupyter will show an input box here if run interactively
     return cave
 
-
-def checkCave(
-    chosenCave_param,
-):  # Renamed parameter to avoid conflict if cell is run multiple times
-    print("You approach the cave...")
-    time.sleep(1)  # Slightly shorter sleeps for faster game in demo
-    print("It is dark and spooky...")
+def checkCave(chosenCave_param): # Renamed parameter to avoid conflict if cell is run multiple times
+    print('You approach the cave...')
+    time.sleep(1) # Slightly shorter sleeps for faster game in demo
+    print('It is dark and spooky...')
     time.sleep(1)
-    print("A large dragon jumps out in front of you! He opens his jaws and...")
-    print()  # Adds a blank line for readability
+    print('A large dragon jumps out in front of you! He opens his jaws and...')
+    print() # Adds a blank line for readability
     time.sleep(1)
 
     friendlyCave_num = random.randint(1, 2)
 
     if chosenCave_param == str(friendlyCave_num):
-        print("Gives you his treasure!")
+        print('Gives you his treasure!')
     else:
-        print("Eats you and spends your robux!")
-
+        print('Eats you and spends your robux!!')
 
 # Main game loop
 # playAgain = 'yes' # This variable would control the loop
@@ -521,7 +639,7 @@ def checkCave(
 # * **Functions (`def`)** organize code into reusable blocks.
 # * **Arguments & Parameters** pass data to functions.
 # * **Return values** get data back from functions.
-# * **Scopes (local/global)** determine where variables live.
+# * **Scopes (local/global)** determine where variables live and help prevent conflicts.
 # * **Boolean logic (`and`, `or`, `not`)** helps make decisions.
 # * **`while` loops** repeat code based on a condition.
 # * **`time.sleep()`** adds pauses for effect.
