@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Python Guide: Lists & Dictionaries</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals (Stone/Amber background with Slate Blue/Terracotta accents) -->
+    <!-- Application Structure Plan: A two-part interactive guide using tab-like navigation to switch between "Lists" and "Dictionaries" sections. This non-linear structure allows the student to focus on one topic at a time. Each concept (e.g., append, access by key) is presented as a self-contained interactive widget, promoting learning by doing rather than passive reading. This is more engaging and effective for a programming tutorial than a linear document format. -->
+    <!-- Visualization & Content Choices: The report's code examples are transformed into interactive widgets. Goal: Teach list/dict operations. Method: HTML forms (input, button) and JS event handlers. Interaction: User types values/clicks buttons, JS manipulates data in an array/object and instantly re-renders the result in a styled <pre> block. This provides immediate visual feedback. For looping, a step-by-step visualizer will highlight each element in sequence. This is more illustrative than a static code block. Library/Method: Vanilla JS for all logic and DOM manipulation. NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f2; /* A warm off-white */
+            color: #3d405b; /* A dark slate blue for text */
+        }
+        .font-mono {
+            font-family: 'Roboto Mono', monospace;
+        }
+        .tab-button {
+            transition: all 0.3s ease-in-out;
+        }
+        .tab-button.active {
+            background-color: #81b29a; /* Muted seafoam green */
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .widget {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+        }
+        .code-display {
+            background-color: #282c34;
+            color: #abb2bf;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .highlight-item {
+            background-color: #e07a5f; /* Terracotta accent */
+            color: white;
+            transition: all 0.5s ease;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <main class="container mx-auto max-w-5xl p-4 sm:p-6 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#3d405b]">Interactive Python Guide</h1>
+            <p class="text-lg text-[#8d99ae] mt-2">Master Lists & Dictionaries by Doing</p>
+        </header>
+
+        <nav class="flex justify-center gap-2 md:gap-4 mb-8">
+            <button id="tab-lists" class="tab-button active text-sm md:text-base font-semibold py-3 px-6 rounded-lg bg-white shadow-sm">
+                <span class="text-2xl mr-2">📋</span> Lists
+            </button>
+            <button id="tab-dicts" class="tab-button text-sm md:text-base font-semibold py-3 px-6 rounded-lg bg-white shadow-sm">
+                 <span class="text-2xl mr-2">📚</span> Dictionaries
+            </button>
+        </nav>
+
+        <!-- Lists Section -->
+        <section id="lists-section" class="">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <article class="widget p-6 rounded-xl shadow-lg col-span-1 md:col-span-2 lg:col-span-3">
+                    <h3 class="font-bold text-xl mb-2 text-[#3d405b]">Your Sample List</h3>
+                    <p class="text-sm text-gray-500 mb-4">This is the list you'll be manipulating in the examples below. It will update in real-time as you interact with the widgets.</p>
+                    <pre id="main-list-display" class="code-display p-4 rounded-lg text-lg"></pre>
+                </article>
+
+                <article class="widget p-6 rounded-xl shadow-lg">
+                    <h3 class="font-bold text-lg mb-2">Accessing by Index</h3>
+                    <p class="text-sm text-gray-500 mb-4">Get an item using its index number. Remember, Python starts counting at 0!</p>
+                    <div class="flex items-center gap-2">
+                        <input id="list-index-input" type="number" placeholder="Index (e.g., 0)" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-[#81b29a] focus:outline-none">
+                        <button id="list-index-btn" class="bg-[#81b29a] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#6a9e86] transition-colors">Get</button>
+                    </div>
+                    <p id="list-index-output" class="mt-3 text-center font-mono text-lg h-8"></p>
+                </article>
+
+                <article class="widget p-6 rounded-xl shadow-lg">
+                    <h3 class="font-bold text-lg mb-2">Check if Item `in` List</h3>
+                    <p class="text-sm text-gray-500 mb-4">Check if a value exists in the list. Returns `True` or `False`.</p>
+                    <div class="flex items-center gap-2">
+                        <input id="list-in-input" type="text" placeholder="Item (e.g., Apple)" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-[#81b29a] focus:outline-none">
+                        <button id="list-in-btn" class="bg-[#81b29a] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#6a9e86] transition-colors">Check</button>
+                    </div>
+                    <p id="list-in-output" class="mt-3 text-center font-mono text-lg h-8"></p>
+                </article>
+
+                <article class="widget p-6 rounded-xl shadow-lg">
+                    <h3 class="font-bold text-lg mb-2">Get List Length `len()`</h3>
+                    <p class="text-sm text-gray-500 mb-4">Click the button to find out how many items are currently in the list.</p>
+                    <button id="list-len-btn" class="w-full bg-[#81b29a] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#6a9e86] transition-colors">Get Length</button>
+                    <p id="list-len-output" class="mt-3 text-center font-mono text-lg h-8"></p>
+                </article>
+
+                <article class="widget p-6 rounded-xl shadow-lg">
+                    <h3 class="font-bold text-lg mb-2">Add with `.append()`</h3>
+                    <p class="text-sm text-gray-500 mb-4">Add a new item to the end of the list. Try adding "Mango".</p>
+                    <div class="flex items-center gap-2">
+                        <input id="list-append-input" type="text" placeholder="New item" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-[#81b29a] focus:outline-none">
+                        <button id="list-append-btn" class="bg-[#81b29a] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#6a9e86] transition-colors">Append</button>
+                    </div>
+                     <p class="mt-3 text-center text-gray-400 text-xs h-8">The main list above will update.</p>
+                </article>
+
+                <article class="widget p-6 rounded-xl shadow-lg">
+                    <h3 class="font-bold text-lg mb-2">Remove with `.remove()`</h3>
+                    <p class="text-sm text-gray-500 mb-4">Remove the first occurrence of a specific value. Try removing "Banana".</p>
+                    <div class="flex items-center gap-2">
+                        <input id="list-remove-input" type="text" placeholder="Item to remove" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-[#81b29a] focus:outline-none">
+                        <button id="list-remove-btn" class="bg-[#e07a5f] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#c9674f] transition-colors">Remove</button>
+                    </div>
+                     <p id="list-remove-output" class="mt-3 text-center font-mono text-sm h-8"></p>
+                </article>
+                
+                <article class="widget p-6 rounded-xl shadow-lg">
+                    <h3 class="font-bold text-lg mb-2">Looping Through a List</h3>
+                    <p class="text-sm text-gray-500 mb-4">Click to visualize a `for` loop iterating over each item in the list.</p>
+                    <button id="list-loop-btn" class="w-full bg-[#81b29a] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#6a9e86] transition-colors">Start Loop</button>
+                    <p id="list-loop-output" class="mt-3 text-center font-mono text-lg h-8"></p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Dictionaries Section -->
+        <section id="dicts-section" class="hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <article class="widget p-6 rounded-xl shadow-lg col-span-1 md:col-span-2 lg:col-span-3">
+                    <h3 class="font-bold text-xl mb-2 text-[#3d405b]">Your Sample Dictionary</h3>
+                    <p class="text-sm text-gray-500 mb-4">This is the dictionary you'll be manipulating. It will update in real-time as you interact with the widgets below.</p>
+                    <pre id="main-dict-display" class="code-display p-4 rounded-lg text-base"></pre>
+                </article>
+
+                <article class="widget p-6 rounded-xl shadow-lg">
+                    <h3 class="font-bold text-lg mb-2">Accessing Values by Key</h3>
+                    <p class="text-sm text-gray-500 mb-4">Get a value by providing its key. Try "username" or "level".</p>
+                    <div class="flex items-center gap-2">
+                        <input id="dict-key-input" type="text" placeholder="Key (e.g., guild)" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-[#81b29a] focus:outline-none">
+                        <button id="dict-key-btn" class="bg-[#81b29a] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#6a9e86] transition-colors">Get</button>
+                    </div>
+                    <p id="dict-key-output" class="mt-3 text-center font-mono text-lg h-8"></p>
+                </article>
+
+                <article class="widget p-6 rounded-xl shadow-lg md:col-span-2">
+                    <h3 class="font-bold text-lg mb-2">Add or Update Entries</h3>
+                    <p class="text-sm text-gray-500 mb-4">Provide a key and a value. If the key exists, its value is updated. If not, a new entry is added.</p>
+                    <div class="flex flex-col sm:flex-row items-center gap-2">
+                        <input id="dict-add-key-input" type="text" placeholder="Key (e.g., status)" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-[#81b29a] focus:outline-none">
+                        <input id="dict-add-value-input" type="text" placeholder="Value (e.g., online)" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-[#81b29a] focus:outline-none">
+                        <button id="dict-add-btn" class="w-full sm:w-auto bg-[#81b29a] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#6a9e86] transition-colors">Set</button>
+                    </div>
+                    <p class="mt-3 text-center text-gray-400 text-xs h-8">The main dictionary above will update.</p>
+                </article>
+                
+                <article class="widget p-6 rounded-xl shadow-lg">
+                    <h3 class="font-bold text-lg mb-2">Check if Key `in` Dictionary</h3>
+                    <p class="text-sm text-gray-500 mb-4">Check if a key exists in the dictionary. Returns `True` or `False`.</p>
+                    <div class="flex items-center gap-2">
+                        <input id="dict-in-input" type="text" placeholder="Key (e.g., level)" class="w-full p-2 border rounded-md focus:ring-2 focus:ring-[#81b29a] focus:outline-none">
+                        <button id="dict-in-btn" class="bg-[#81b29a] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#6a9e86] transition-colors">Check</button>
+                    </div>
+                    <p id="dict-in-output" class="mt-3 text-center font-mono text-lg h-8"></p>
+                </article>
+
+                <article class="widget p-6 rounded-xl shadow-lg md:col-span-2">
+                    <h3 class="font-bold text-lg mb-2">Looping Through a Dictionary</h3>
+                    <p class="text-sm text-gray-500 mb-4">Visualize looping through the dictionary's keys, values, or both.</p>
+                    <div class="flex flex-wrap justify-center gap-2">
+                        <button id="dict-loop-keys-btn" class="flex-grow bg-[#3d405b] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#2c2f42] transition-colors">Loop Keys</button>
+                        <button id="dict-loop-values-btn" class="flex-grow bg-[#3d405b] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#2c2f42] transition-colors">Loop Values</button>
+                        <button id="dict-loop-items-btn" class="flex-grow bg-[#3d405b] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#2c2f42] transition-colors">Loop Items</button>
+                    </div>
+                    <p id="dict-loop-output" class="mt-3 text-center font-mono text-lg h-8"></p>
+                </article>
+                
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- STATE ---
+            let listData = ["Apple", "Banana", "Cherry"];
+            let dictData = {
+                "username": "Gamer123",
+                "level": 25,
+                "guild": "The Avengers"
+            };
+
+            // --- DOM ELEMENTS ---
+            const tabLists = document.getElementById('tab-lists');
+            const tabDicts = document.getElementById('tab-dicts');
+            const listsSection = document.getElementById('lists-section');
+            const dictsSection = document.getElementById('dicts-section');
+
+            // List elements
+            const mainListDisplay = document.getElementById('main-list-display');
+            const listIndexInput = document.getElementById('list-index-input');
+            const listIndexBtn = document.getElementById('list-index-btn');
+            const listIndexOutput = document.getElementById('list-index-output');
+            const listInInput = document.getElementById('list-in-input');
+            const listInBtn = document.getElementById('list-in-btn');
+            const listInOutput = document.getElementById('list-in-output');
+            const listLenBtn = document.getElementById('list-len-btn');
+            const listLenOutput = document.getElementById('list-len-output');
+            const listAppendInput = document.getElementById('list-append-input');
+            const listAppendBtn = document.getElementById('list-append-btn');
+            const listRemoveInput = document.getElementById('list-remove-input');
+            const listRemoveBtn = document.getElementById('list-remove-btn');
+            const listRemoveOutput = document.getElementById('list-remove-output');
+            const listLoopBtn = document.getElementById('list-loop-btn');
+            const listLoopOutput = document.getElementById('list-loop-output');
+
+            // Dictionary elements
+            const mainDictDisplay = document.getElementById('main-dict-display');
+            const dictKeyInput = document.getElementById('dict-key-input');
+            const dictKeyBtn = document.getElementById('dict-key-btn');
+            const dictKeyOutput = document.getElementById('dict-key-output');
+            const dictAddKeyInput = document.getElementById('dict-add-key-input');
+            const dictAddValueInput = document.getElementById('dict-add-value-input');
+            const dictAddBtn = document.getElementById('dict-add-btn');
+            const dictInInput = document.getElementById('dict-in-input');
+            const dictInBtn = document.getElementById('dict-in-btn');
+            const dictInOutput = document.getElementById('dict-in-output');
+            const dictLoopKeysBtn = document.getElementById('dict-loop-keys-btn');
+            const dictLoopValuesBtn = document.getElementById('dict-loop-values-btn');
+            const dictLoopItemsBtn = document.getElementById('dict-loop-items-btn');
+            const dictLoopOutput = document.getElementById('dict-loop-output');
+
+
+            // --- RENDER FUNCTIONS ---
+            function renderList() {
+                mainListDisplay.textContent = `[${listData.map(item => `"${item}"`).join(', ')}]`;
+            }
+
+            function renderDict() {
+                let formattedString = '{\n';
+                for (const key in dictData) {
+                    const value = dictData[key];
+                    const formattedValue = typeof value === 'string' ? `"${value}"` : value;
+                    formattedString += `    "${key}": ${formattedValue},\n`;
+                }
+                formattedString += '}';
+                mainDictDisplay.textContent = formattedString;
+            }
+            
+            function clearOutputs(){
+                listIndexOutput.textContent = '';
+                listInOutput.textContent = '';
+                listLenOutput.textContent = '';
+                listRemoveOutput.textContent = '';
+                listLoopOutput.textContent = '';
+                dictKeyOutput.textContent = '';
+                dictInOutput.textContent = '';
+                dictLoopOutput.textContent = '';
+            }
+
+            // --- TABS LOGIC ---
+            function switchTab(activeTab) {
+                clearOutputs();
+                if (activeTab === 'lists') {
+                    tabLists.classList.add('active');
+                    tabDicts.classList.remove('active');
+                    listsSection.classList.remove('hidden');
+                    dictsSection.classList.add('hidden');
+                } else {
+                    tabLists.classList.remove('active');
+                    tabDicts.classList.add('active');
+                    listsSection.classList.add('hidden');
+                    dictsSection.classList.remove('hidden');
+                }
+            }
+
+            tabLists.addEventListener('click', () => switchTab('lists'));
+            tabDicts.addEventListener('click', () => switchTab('dicts'));
+
+            // --- LISTS LOGIC ---
+            listIndexBtn.addEventListener('click', () => {
+                const index = parseInt(listIndexInput.value);
+                if (isNaN(index)) {
+                    listIndexOutput.textContent = 'Error: Not a number';
+                    return;
+                }
+                if (index >= 0 && index < listData.length) {
+                    listIndexOutput.textContent = `-> "${listData[index]}"`;
+                } else {
+                    listIndexOutput.textContent = 'Error: Index out of bounds';
+                }
+            });
+
+            listInBtn.addEventListener('click', () => {
+                const item = listInInput.value;
+                if (!item) return;
+                listInOutput.textContent = `-> ${listData.includes(item)}`;
+            });
+
+            listLenBtn.addEventListener('click', () => {
+                listLenOutput.textContent = `-> ${listData.length}`;
+            });
+
+            listAppendBtn.addEventListener('click', () => {
+                const item = listAppendInput.value;
+                if (!item) return;
+                listData.push(item);
+                renderList();
+                listAppendInput.value = '';
+            });
+
+            listRemoveBtn.addEventListener('click', () => {
+                const item = listRemoveInput.value;
+                 if (!item) return;
+                const index = listData.indexOf(item);
+                if (index > -1) {
+                    listData.splice(index, 1);
+                    renderList();
+                    listRemoveOutput.textContent = `"${item}" removed.`;
+                } else {
+                    listRemoveOutput.textContent = 'Error: Item not found.';
+                }
+                listRemoveInput.value = '';
+            });
+            
+            listLoopBtn.addEventListener('click', () => {
+                let i = 0;
+                listLoopBtn.disabled = true;
+                const interval = setInterval(() => {
+                    if (i < listData.length) {
+                        const originalText = `[${listData.map(item => `"${item}"`).join(', ')}]`;
+                        const itemToHighlight = `"${listData[i]}"`;
+                        const highlightedText = originalText.replace(itemToHighlight, `<span class="highlight-item">${itemToHighlight}</span>`);
+                        mainListDisplay.innerHTML = highlightedText;
+                        listLoopOutput.textContent = `Looping: "${listData[i]}"`;
+                        i++;
+                    } else {
+                        clearInterval(interval);
+                        renderList(); // Reset display
+                        listLoopOutput.textContent = 'Loop finished.';
+                        listLoopBtn.disabled = false;
+                    }
+                }, 1000);
+            });
+
+
+            // --- DICTIONARIES LOGIC ---
+            dictKeyBtn.addEventListener('click', () => {
+                const key = dictKeyInput.value;
+                if (!key) return;
+                if (key in dictData) {
+                    const value = dictData[key];
+                    const formattedValue = typeof value === 'string' ? `"${value}"` : value;
+                    dictKeyOutput.textContent = `-> ${formattedValue}`;
+                } else {
+                    dictKeyOutput.textContent = 'Error: Key not found';
+                }
+            });
+            
+            dictAddBtn.addEventListener('click', () => {
+                const key = dictAddKeyInput.value;
+                const value = dictAddValueInput.value;
+                if(!key || !value) return;
+                
+                // Attempt to convert to number if possible
+                const numericValue = parseFloat(value);
+                dictData[key] = isNaN(numericValue) || value.trim() !== numericValue.toString() ? value : numericValue;
+
+                renderDict();
+                dictAddKeyInput.value = '';
+                dictAddValueInput.value = '';
+            });
+            
+            dictInBtn.addEventListener('click', () => {
+                const key = dictInInput.value;
+                if (!key) return;
+                dictInOutput.textContent = `-> ${key in dictData}`;
+            });
+            
+            function dictLoop(type) {
+                let dataToLoop;
+                let displayPrefix = '';
+                
+                switch(type) {
+                    case 'keys':
+                        dataToLoop = Object.keys(dictData);
+                        displayPrefix = 'Key: ';
+                        break;
+                    case 'values':
+                        dataToLoop = Object.values(dictData);
+                        displayPrefix = 'Value: ';
+                        break;
+                    case 'items':
+                        dataToLoop = Object.entries(dictData);
+                        displayPrefix = 'Item: ';
+                        break;
+                }
+                
+                let i = 0;
+                dictLoopKeysBtn.disabled = true;
+                dictLoopValuesBtn.disabled = true;
+                dictLoopItemsBtn.disabled = true;
+
+                const interval = setInterval(() => {
+                    if (i < dataToLoop.length) {
+                        let currentItem = dataToLoop[i];
+                        let displayText;
+                        if(type === 'items'){
+                           displayText = `["${currentItem[0]}", "${currentItem[1]}"]`;
+                        } else {
+                           displayText = `"${currentItem}"`;
+                        }
+                        dictLoopOutput.textContent = `${displayPrefix}${displayText}`;
+                        i++;
+                    } else {
+                        clearInterval(interval);
+                        dictLoopOutput.textContent = 'Loop finished.';
+                        dictLoopKeysBtn.disabled = false;
+                        dictLoopValuesBtn.disabled = false;
+                        dictLoopItemsBtn.disabled = false;
+                    }
+                }, 1000);
+            }
+
+            dictLoopKeysBtn.addEventListener('click', () => dictLoop('keys'));
+            dictLoopValuesBtn.addEventListener('click', () => dictLoop('values'));
+            dictLoopItemsBtn.addEventListener('click', () => dictLoop('items'));
+
+
+            // --- INITIAL RENDER ---
+            renderList();
+            renderDict();
+        });
+    </script>
+
+</body>
+</html>
