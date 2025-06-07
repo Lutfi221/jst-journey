@@ -43,11 +43,11 @@ print("The first fruit is:", first_fruit) # Output: The first fruit is: Apple
 third_fruit = fruits[2]
 print("The third fruit is:", third_fruit) # Output: The third fruit is: Cherry
 
-```
+```python
 
 You can also use negative indexes to count from the end of the list. -1 refers to the last item, -2 to the second-to-last, and so on.
 
-```
+```python
 # Get the last fruit
 last_fruit = fruits[-1]
 print("The last fruit is:", last_fruit) # Output: The last fruit is: Durian
@@ -56,7 +56,7 @@ print("The last fruit is:", last_fruit) # Output: The last fruit is: Durian
 Checking if an Item is in a List
 A very common task is to check if a value exists in a list. The in keyword makes this easy. It returns True or False.
 
-```
+```python
 guest_list = ["Ani", "Budi", "Eko", "Wati"]
 
 # Check if "Eko" is on the list
@@ -77,7 +77,7 @@ This will be extremely useful for Hangman to check if a guessed letter is in the
 Getting the Length of a List
 To find out how many items are in a list, use the len() function.
 
-```
+```python
 numbers = [10, 20, 30, 40, 50, 60]
 item_count = len(numbers)
 print("The list has", item_count, "items.") # Output: The list has 6 items.
@@ -99,7 +99,7 @@ print("Tasks after:", tasks) # Output: Tasks after: ['Clean room', 'Do homework'
 Removing with .remove()
 The .remove() method removes the first matching value from a list.
 
-```
+```python
 tools = ["Hammer", "Screwdriver", "Wrench", "Screwdriver"]
 print("Tools before:", tools)
 
@@ -112,7 +112,7 @@ Important: If you try to .remove() an item that doesn't exist, your program will
 Looping Through a List
 You can easily perform an action on every item in a list using a for loop.
 
-```
+```python
 # Printing every member of a team
 team_members = ["Pikachu", "Charmander", "Squirtle"]
 
@@ -129,7 +129,7 @@ While a list is an ordered set of items, a dictionary is an unordered collection
 Creating a Dictionary
 You create a dictionary using curly braces {}. Each entry consists of a key, a colon :, and a value.
 
-```
+```python
 # A dictionary to store a student's information
 student = {
     "name": "Budi",
@@ -158,7 +158,7 @@ Keys are usually strings, but they can be numbers. Values can be any data type (
 Accessing Values Using Keys
 You don't use indexes with dictionaries. Instead, you use the key in square brackets to get its corresponding value.
 
-```
+```python
 player_profile = {
     "username": "Gamer123",
     "level": 25,
@@ -179,7 +179,7 @@ Important: If you try to access a key that doesn't exist, your program will cras
 Adding or Updating Entries
 Adding a new key:value pair or updating an existing one is easy.
 
-```
+```python
 # Starting with a simple user profile
 user_settings = {
     "theme": "dark",
@@ -198,7 +198,7 @@ print("Settings after updating:", user_settings)
 Checking if a Key Exists
 Just like with lists, you can use the in keyword to check if a key exists in a dictionary before you try to access it. This helps avoid errors.
 
-```
+```python
 car = {
     "brand": "Toyota",
     "model": "Avanza"
@@ -219,7 +219,7 @@ You can loop through a dictionary in a few ways.
 Looping Through Keys
 By default, a for loop over a dictionary gives you its keys.
 
-```
+```python
 capitals = {
     "Indonesia": "Jakarta",
     "Japan": "Tokyo",
@@ -234,7 +234,7 @@ for country in capitals:
 Looping Through Values with .values()
 If you only need the values, use the .values() method.
 
-```
+```python
 print("\nCapitals:")
 for city in capitals.values():
     print(city)
