@@ -4,3 +4,4 @@
 - [Materials 2025-05-24](./activities/2025-05-24/dragon-realm/dragon-realm-tutorial.md)
     - [Full Python code](https://inventwithpython.com/invent4thed/chapter5.html)
 - [Homework 2025-05-24](./activities/2025-05-24/rps/rps.md)
+- [Homework 2025-05-24](./activities/2025-06-07/homework.md)
