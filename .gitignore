@@ -1,2 +1,4 @@
 *.ipynb
 /prompting/
+hp.txt
+repomix-output.xml
