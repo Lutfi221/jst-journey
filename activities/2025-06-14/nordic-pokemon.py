@@ -112,6 +112,10 @@ while True:
     villain["health"] = (
         villain["health"] - hero_attack_multiplier * hero["weapon_strength"]
     )
+    
+    if villain["health"] <= 0:
+        print(f"Villain {villain['name']} is dead!")
+        break
 
     if is_villain_automated:
         villain_attack_style = random.randint(1, 3)
@@ -135,7 +139,4 @@ while True:
 
     if hero["health"] <= 0:
         print(f"Hero {hero['name']} is dead!")
-        break
-    if villain["health"] <= 0:
-        print(f"Villain {villain['name']} is dead!")
         break
