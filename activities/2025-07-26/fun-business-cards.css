@@ -1,0 +1,138 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-family: "Roboto", sans-serif;
+  background-color: #333;
+}
+
+.card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  width: 50%;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.hello {
+  color: #37354a;
+  font-size: 64px;
+}
+
+.front .name {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-weight: bolder;
+  font-size: 48px;
+}
+
+.front .im {
+  color: #fff;
+  background-color: #33b6d5;
+  padding: 10px 30px;
+  border-radius: 50px 0 0 50px;
+  border: 3px solid #000;
+  border-right: none;
+}
+
+.front .lutfi {
+  color: #ff586d;
+  background-color: #ffd925;
+  padding: 10px 30px;
+  border-radius: 0 50px 50px 0;
+  border: 3px solid #000;
+  border-left: none;
+}
+
+.palette {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.palette-item {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #33b6d5;
+}
+
+.front-left {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.front-right {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 64px;
+  font-weight: 500;
+}
+
+.back {
+  background-color: #33354a;
+  color: #fff;
+}
+
+.back .name {
+  font-weight: bolder;
+  font-size: 48px;
+}
+
+.back .lutfi {
+  color: #ffd925;
+}
+
+.back .azis {
+  color: #ff586d;
+}
+
+.back-left {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 64px;
+  gap: 10px;
+}
+
+.contact {
+  color: #000;
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 16px;
+  width: 100%;
+}
+
+.contact ul {
+  list-style-type: none;
+}
+
+.contact ul li {
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.back-right {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.no-margin {
+  margin: 0;
+}
