@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grass Grower</title>
+  </head>
+  <body>
+    <h1>Grass Grower</h1>
+    <button onclick="growGrass()">Grow Grass</button>
+    <button onclick="growMushroom()">Grow Mushroom</button>
+    <button onclick="destroyLawn()">Destroy Lawn</button>
+    <ul id="lawn"></ul>
+    <script>
+      let lawnElem = document.getElementById("lawn");
+      function growGrass() {
+        lawnElem.innerHTML = lawnElem.innerHTML + "<li>☘️</li>";
+      }
+      function growMushroom() {
+        lawnElem.innerHTML = lawnElem.innerHTML + "<li>🍄</li>";
+      }
+      function destroyLawn() {
+        lawnElem.innerHTML = "";
+      }
+    </script>
+  </body>
+</html>

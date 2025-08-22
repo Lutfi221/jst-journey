@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Random Quote Generator</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f4f9;
+        text-align: center;
+        padding: 20px;
+      }
+      #quote-container {
+        background-color: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+      }
+      #quote-text {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+      }
+      #quote-author {
+        font-size: 1.2em;
+        font-style: italic;
+        color: #555;
+        margin-bottom: 30px;
+      }
+      #new-quote-btn {
+        padding: 10px 20px;
+        font-size: 1em;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="quote-container">
+      <p id="quote-text">
+        The only way to do great work is to love what you do.
+      </p>
+      <p id="quote-author">- Steve Jobs</p>
+      <button id="new-quote-btn" onclick="growQuote();">New Quote</button>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

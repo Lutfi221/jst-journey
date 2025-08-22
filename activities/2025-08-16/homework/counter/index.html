@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grass Grower</title>
+  </head>
+  <body>
+    <h1>Grass Grower</h1>
+    <button>Grow Grass</button>
+    <ul id="grassList">
+      <li>☘️</li>
+    </ul>
+    <script>
+      let grassListEl = document.getElementById("grassList");
+      function growGrass() {
+        grassListEl.innerHTML = grassListEl.innerHTML + `<li>☘️</li>`;
+      }
+    </script>
+  </body>
+</html>
