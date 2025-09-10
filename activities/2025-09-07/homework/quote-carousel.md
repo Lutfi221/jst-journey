@@ -1,5 +1,3 @@
-Of course! Here is the homework assignment for building a quote carousel, crafted in the style of your provided examples.
-
 # HTML/JS Homework: Building a Quote Carousel
 
 Follow the steps below. For each step:

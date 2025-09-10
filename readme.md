@@ -6,3 +6,5 @@
 - [Homework 2025-05-24](./activities/2025-05-24/rps/rps.md)
 - [Homework 2025-06-07](./activities/2025-06-07/homework.md)
 - [Homework 2025-06-14](./activities/2025-06-14/homework.md)
+- [Homework 2025-08-16](./activities/2025-08-16/homework/homework.md)
+- [Homework 2025-09-07](./activities/2025-09-07/homework/homework.md)

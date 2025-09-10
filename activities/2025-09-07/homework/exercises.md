@@ -1,7 +1,3 @@
-Of course! Here is the homework assignment for the HTML/JS exercises, written in the requested format.
-
------
-
 # HTML/JS Homework: Basic DOM Manipulation
 
 Follow the steps below. For each step:
