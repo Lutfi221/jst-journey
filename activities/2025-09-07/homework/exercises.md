@@ -14,7 +14,7 @@ Follow the steps below. For each step:
 
 When you're finished, you will have built a single page with four separate interactive components. Each one demonstrates a different way to use JavaScript to manipulate the content of an HTML page based on user actions like clicking a button.
 
-[Here's a video of the final result](./exercises-demo.mp4)
+https://github.com/user-attachments/assets/631e2d95-581c-4121-abbe-a0d796e0eea2
 
 -----
 
