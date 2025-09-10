@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Carousel</title>
+</head>
+<body>
+    <h1>Quote Carousel</h1>
+    <div id="quote-container">
+        <p id="quote"></p>
+        <p id="author"></p>
+    </div>
+    <button onclick="prevQuote()">Previous</button>
+    <button onclick="nextQuote()">Next</button>
+
+    <script>
+        let authors = [
+            "Steve Jobs",
+            "Albert Einstein",
+            "Maya Angelou",
+            "Nelson Mandela",
+        ]
+        let quotes = [
+            "The only way to do great work is to love what you do.",
+            "Imagination is more important than knowledge. Knowledge is limited. Imagination encircles the world.",
+            "You have to be a little crazy to do great things.",
+            "It always seems impossible until it's done.",
+        ]
+        let currentIndex = 0;
+
+        function displayQuote() {
+            let quoteElem = document.getElementById("quote");
+            let authorElem = document.getElementById("author");
+            quoteElem.innerText = quotes[currentIndex];
+            authorElem.innerText = authors[currentIndex];
+        }
+
+        function prevQuote() {
+            currentIndex = currentIndex - 1;
+            if (currentIndex < 0) {
+                currentIndex = quotes.length - 1;
+            }
+            displayQuote();
+        }
+
+        function nextQuote() {
+            currentIndex = currentIndex + 1;
+            if (currentIndex >= quotes.length) {
+                currentIndex = 0;
+            }
+            displayQuote();
+        }
+
+        displayQuote();
+    </script>
+</body>
+</html>

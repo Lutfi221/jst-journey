@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML JS exercises</title>
+  </head>
+  <body>
+    <!-- Reveal text using button -->
+    <h1>Reveal text using button</h1>
+    <button onclick="revealText()">Reveal secret message</button>
+    <p id="secret-message"></p>
+
+    <script>
+      function revealText() {
+        let secretMessage = "The password is I see bread people'";
+        document.getElementById("secret-message").innerText = secretMessage;
+      }
+    </script>
+
+    <!-- Switch text using button -->
+    <h1>Switch text using button</h1>
+    <button onclick="switchText()">Switch text</button>
+    <p id="text-to-switch">FRONT</p>
+
+    <script>
+      function switchText() {
+        let textElem = document.getElementById("text-to-switch");
+        let currentText = textElem.innerText;
+        if (currentText == "FRONT") {
+          textElem.innerText = "BACK";
+        } else {
+          textElem.innerText = "FRONT";
+        }
+      }
+    </script>
+
+    <!-- Say what? -->
+    <h1>Say what?</h1>
+    <button onclick="say('Hello')">Say Hello</button>
+    <button onclick="say('Goodbye')">Say Goodbye</button>
+
+    <script>
+      function say(message) {
+        alert(message);
+      }
+    </script>
+
+    <!-- Screamer -->
+    <h1>Screamer</h1>
+    <button onclick="scream()">Aah</button>
+    <p id="screamer-text">A</p>
+
+    <script>
+      function scream() {
+        let screamerText = document.getElementById("screamer-text");
+        screamerText.innerText = screamerText.innerText + "a";
+      }
+    </script>
+  </body>
+</html>
