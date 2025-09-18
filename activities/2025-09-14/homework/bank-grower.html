@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grow numbers</title>
+  </head>
+  <body>
+    <ul id="balance-list"></ul>
+    <script>
+let balanceListElem = document.getElementById("balance-list");
+for (let i = 1000; i > 0; i -= 100) {
+    if (i >= 300 && i <= 600) {
+        balanceListElem.innerHTML += '<li> hidden </li>';
+    } else {
+        balanceListElem.innerHTML += '<li> $ ' + i + '</li>';
+    }
+}
+    </script>
+  </body>
+</html>

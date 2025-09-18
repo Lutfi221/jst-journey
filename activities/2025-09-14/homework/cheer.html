@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <ul id="nickname-list"></ul>
+    <ul id="cheer-list"></ul>
+    <script>
+      let nicknameListElem = document.getElementById("nickname-list");
+      let nicknames = [
+        "star",
+        "champion",
+        "genius",
+        "superstar",
+        "rockstar",
+        "legend",
+        "hero",
+        "superhero",
+      ];
+
+      for (let i = 0; i < nicknames.length; i++) {
+        let nickname = nicknames[i];
+        nicknameListElem.innerHTML += "<li>You are a " + nickname + "!</li>";
+      }
+
+      let cheerListElem = document.getElementById("cheer-list");
+      let adjectives = [
+        "amazing",
+        "fantastic",
+        "wonderful",
+        "great",
+        "awesome",
+      ];
+
+      for (let i = 0; i < adjectives.length; i++) {
+        let adjective = adjectives[i];
+        cheerListElem.innerHTML += "<li>You are " + adjective + "!</li>";
+      }
+    </script>
+  </body>
+</html>
