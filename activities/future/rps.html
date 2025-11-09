@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rock paper scissors</title>
+  </head>
+  <body>
+    <h1>Rock paper scissors</h1>
+    <div>
+      <button onclick="play('rock')">Rock 🪨</button>
+      <button onclick="play('paper')">Paper 📄</button>
+      <button onclick="play('scissors')">Scissors ✂️</button>
+    </div>
+    <div>
+      <p>Player: <span id="player-choice"></span></p>
+      <p>Computer: <span id="computer-choice"></span></p>
+      <p>Result: <span id="result"></span></p>
+    </div>
+
+    <script>
+      let playerChoiceElem = document.getElementById("player-choice");
+      let computerChoiceElem = document.getElementById("computer-choice");
+      let resultElem = document.getElementById("result");
+
+      function play(playerChoice) {
+        playerChoiceElem.innerText = playerChoice;
+
+        let choices = ["rock", "paper", "scissors"];
+        computerChoice = choices[Math.floor(Math.random() * choices.length)];
+        computerChoiceElem.innerText = computerChoice;
+
+        let result = "";
+
+        if (playerChoice == computerChoice) {
+          result = "It's a tie!";
+        } else if (playerChoice == "rock" && computerChoice == "scissors") {
+          result = "You win!";
+        } else if (playerChoice == "paper" && computerChoice == "rock") {
+          result = "You win!";
+        } else if (playerChoice == "scissors" && computerChoice == "paper") {
+          result = "You win!";
+        } else {
+          result = "You lose!";
+        }
+
+        resultElem.innerText = result;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quizz</title>
+  </head>
+  <body>
+    <h1>Country Quiz</h1>
+    <h2 id="No_x"></h2>
+    <p id="question"></p>
+    <button id="butt_1" onclick="check_ans(0)"></button>
+    <button id="butt_2" onclick="check_ans(1)"></button>
+    <button id="butt_3" onclick="check_ans(2)"></button>
+    <script>
+      let questions_a = [
+        "What is Spain without the S?",
+        "Who is in paris?",
+        "What Donald Trump second name be?",
+      ];
+      let answers_be = ["Pain", "Waldo and Tintin", "Trumpy"];
+      let choices = [
+        ["Pain", "Poin", "Pein"],
+        ["Asterix and Obelisk", "Tintin and Waldo", "Ishowspeed and Kai"],
+        ["Dumpy", "Trumpy", "Rumpy"],
+      ];
+
+      let number_elem = document.getElementById("No_x");
+      let questions_elem = document.getElementById("question");
+      let butt_1_elem = document.getElementById("butt_1");
+      let butt_2_elem = document.getElementById("butt_2");
+      let butt_3_elem = document.getElementById("butt_3");
+
+      let i_question = 1;
+
+      questions_elem.innerHTML += questions_a[i_question];
+      butt_1_elem.innerHTML += choices[i_question][0];
+      butt_2_elem.innerHTML += choices[i_question][1];
+      butt_3_elem.innerHTML += choices[i_question][2];
+      number_elem.innerHTML += "No." + 1;
+
+      function check_ans(x) {
+        console.log(x);
+        alert(choices[i_question][x]);
+        let chosen = answers_be[x];
+        if (chosen === answers_be[i_question]) {
+          alert("Correct!");
+        } else {
+          alert("Fiddlesticks!");
+        }
+      }
+    </script>
+  </body>
+</html>

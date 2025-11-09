@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+</head>
+<body>
+    <h1>Quiz</h1>
+    <h2 id="no">No. 1</h2>
+    <p id="question">What is the capital of France?</p>
+    <button id="choice1" onclick="checkAnswer(0)">Paris</button>
+    <button id="choice2" onclick="checkAnswer(1)">London</button>
+    <button id="choice3" onclick="checkAnswer(2)">Rome</button>
+    <script>
+        let questions = [
+            "What is the capital of France?",
+            "What is the capital of Germany?",
+            "What is the capital of Italy?",
+        ];
+
+        let choices = [
+            ["Paris", "London", "Rome"],
+            ["Berlin", "Madrid", "Rome"],
+            ["Paris", "Rome", "Madrid"],
+        ];
+
+        let answers = [
+            "Paris",
+            "Berlin",
+            "Rome",
+        ];
+
+        let iQuestion = 0;
+
+        function showQuestion() {
+            let questionElem = document.getElementById("question");
+            let noElem = document.getElementById("no");
+            let btn1 = document.getElementById("choice1");
+            let btn2 = document.getElementById("choice2");
+            let btn3 = document.getElementById("choice3");
+
+            questionElem.textContent = questions[iQuestion];
+            noElem.textContent = "No. " + (iQuestion + 1);
+            btn1.textContent = choices[iQuestion][0];
+            btn2.textContent = choices[iQuestion][1];
+            btn3.textContent = choices[iQuestion][2];
+        }
+
+        function checkAnswer(iChoice) {
+            if (choices[iQuestion][iChoice] === answers[iQuestion]) {
+                alert("Correct!");
+            } else {
+                alert("Incorrect!");
+            }
+            iQuestion++;
+            if (iQuestion < questions.length) {
+                showQuestion();
+            } else {
+                alert("Quiz finished!");
+            }
+        }
+    </script>
+</body>
+</html>
