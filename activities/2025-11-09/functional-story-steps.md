@@ -20,8 +20,6 @@ graph TD
 
 ```
 
-Building that MVP from a completely blank file is a great way to understand how the pieces fit together. Here is the logical progression, step-by-step, of how you would build it from scratch.
-
 ### Step 1: Define the Game's "State"
 
 First, you need to store the information that will change during the game. In our MVP, that's just the player's data. We use a dictionary for this.
@@ -231,5 +229,3 @@ def play_game():
             print("==========================")
             break # Break the loop to end the game
 ```
-
-And that's it\! You've built the complete MVP from scratch. You started with state, added rules, built the loop, added I/O (showing and getting), and finally added the logic.
