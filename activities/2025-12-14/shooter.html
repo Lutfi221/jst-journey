@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .target {
+            position: absolute;
+            border-radius: 50%;
+            transition-duration: 0.3s;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button id="target" class="target">X</button>
+    <script>
+        var targetElem = document.getElementById("target");
+
+        setInterval(() => {
+            var new_top = Math.floor(Math.random() * 100);
+            var new_left = Math.floor(Math.random() * 100);
+
+            targetElem.style.top = new_top + "px";
+            targetElem.style.left = new_left + "px";
+            targetElem.style.color = "blue";
+        }, 1000);
+
+    </script>
+</body>
+</html>

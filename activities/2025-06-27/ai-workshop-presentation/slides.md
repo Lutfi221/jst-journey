@@ -10,7 +10,7 @@ title: AI Workshop
 An Introduction to the World of Artificial Intelligence
 
 <div @click="$slidev.nav.next" class="mt-12 py-1" hover:bg="white op-10">
-  Press Space for next page ➡️
+  Press Space for next page ➡️  
 </div>
 
 ---
