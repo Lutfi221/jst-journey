@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Teleprompter</title>
+    <style>
+        /* Base page styling for high contrast and readability */
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 6vw; /* Scales text based on screen width */
+            line-height: 1.5;
+            margin: 0;
+            /* Extra padding at bottom so the last line scrolls up to eye level */
+            padding: 80px 10% 70vh 10%; 
+        }
+
+        /* Fixed control bar at the top of the screen */
+        #controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #222;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 1000; /* Keeps controls on top of the text */
+            font-size: 18px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button.stop {
+            background-color: #f44336;
+        }
+
+        /* Removes the outline when you click the text to edit it */
+        #script:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="controls">
+        <button id="toggleBtn">Start</button>
+        <label>
+            Speed: 
+            <input type="range" id="speed" min="1" max="10" value="2">
+        </label>
+    </div>
+
+    <div id="script" contenteditable="true">
+        Click here to edit this text or paste your own script.
+        <br><br>
+        Once you have your script ready, click the Start button at the top to begin scrolling. You can adjust the speed using the slider. 
+        <br><br>
+        When you are done reading, just click Stop.
+        <br><br>
+        (Add more text here to see the scrolling effect in action...)
+    </div>
+
+    <script>
+        const toggleBtn = document.getElementById('toggleBtn');
+        const speedInput = document.getElementById('speed');
+        
+        let isPlaying = false;
+
+        // Function that handles the continuous scrolling
+        function scrollText() {
+            if (isPlaying) {
+                // Get the current speed from the slider and scroll the window down
+                const speed = parseFloat(speedInput.value);
+                window.scrollBy(0, speed);
+                
+                // Request the next animation frame for smooth scrolling
+                requestAnimationFrame(scrollText);
+            }
+        }
+
+        // Toggle button click event
+        toggleBtn.addEventListener('click', () => {
+            isPlaying = !isPlaying; // Flip the state
+            
+            if (isPlaying) {
+                toggleBtn.innerText = "Stop";
+                toggleBtn.classList.add("stop");
+                // Remove focus from the text area if the user was just editing it
+                document.getElementById('script').blur(); 
+                requestAnimationFrame(scrollText);
+            } else {
+                toggleBtn.innerText = "Start";
+                toggleBtn.classList.remove("stop");
+            }
+        });
+    </script>
+</body>
+</html>

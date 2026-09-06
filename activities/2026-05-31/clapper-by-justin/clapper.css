@@ -1,0 +1,58 @@
+body{
+    background-color: gray;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px;
+}
+.clapper_bd{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: xx-large;
+    background-color: black;
+    border-radius: 20px;
+    color: aliceblue;
+    width: min-content;
+    border-style: ridge;
+}
+.buttons{
+    display: flex;
+    flex-direction: row;
+    background-color: brown;
+}
+.add, .erase{
+    width: 50%;
+    font-size: xx-large;
+
+}
+
+.title, .scene, .take {
+    font-size: xx-large;
+
+}
+.clapper_top{
+    width: 100%;
+    background: repeating-linear-gradient(
+        45deg,
+        black,
+        black 20px,
+        white 20px,
+        white 40px
+    );
+    height: 100%;
+    transform-origin: bottom left; 
+    transform: rotate(-20deg); 
+    transition: transform 0.05s ease-in; 
+}
+.clapper_bottom{
+    width: 100%;
+    background: repeating-linear-gradient(
+        45deg,
+        black,
+        black 20px,
+        white 20px,
+        white 40px
+    );
+    height: 100%;
+}

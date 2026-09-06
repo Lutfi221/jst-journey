@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini-Game & Tool Hub</title>
+    <style>
+        /* CSS Refresher & Flexbox Layouts */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f9ff;
+            color: #1e293b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        h1 {
+            color: #0369a1;
+            text-align: center;
+        }
+
+        .card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #2563eb;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f1f5f9;
+        }
+
+        /* Target Practice Styling */
+        .target-area {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            background-color: #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .target {
+            position: absolute;
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition-duration: 0.3s;
+        }
+
+        ul, ol {
+            background: #f8fafc;
+            padding: 15px 30px;
+            border-radius: 8px;
+            margin: 5px 0;
+        }
+
+        .img-grid {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .img-grid img {
+            width: 30%;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Mini-Game & Tool Hub 🚀</h1>
+
+    <div class="card">
+        <h2>0. The Building Blocks</h2>
+        
+        <h3>Heading 3: Typography Basics</h3>
+        <h4>Heading 4: Text Formatting</h4>
+        <h5>Heading 5: Paragraphs</h5>
+
+        <p>This is the first paragraph. It contains <strong>bold text</strong> for emphasis and <em>italic text</em> for style.</p>
+        <p>Here is a second paragraph. We can use <strong>strong tags</strong> to denote importance, and <em>em tags</em> for subtle stress.</p>
+        <p>Finally, a third paragraph. Notice how <strong>bolding</strong> draws the eye, while <em>italicizing</em> changes the tone.</p>
+
+        <hr>
+
+        <h3>Navigation & Actions</h3>
+        <div class="row">
+            <a href="https://www.google.com" target="_blank">Link to Google</a> <a href="https://inventwithpython.com/" target="_blank">Link to Python Resources</a> <a href="#" target="_blank">Placeholder Link</a>
+        </div>
+        <div class="row" style="margin-top: 10px;">
+            <button>Click me 1</button> <button>Click me 2</button>
+            <button>Click me 3</button>
+        </div>
+
+        <hr>
+
+        <h3>Organized Lists</h3>
+        <p>1. Unordered List (Shopping Items):</p> <ul>
+            <li>Apple</li>
+            <li>Banana</li>
+            <li>Orange</li>
+        </ul>
+
+        <p>2. Ordered List (Ranking):</p> <ol>
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <li>Item 3</li>
+        </ol>
+
+        <p>3. Unordered List (Friends):</p> <ul>
+            <li>John</li>
+            <li>Jane</li>
+            <li>Jim</li>
+        </ul>
+
+        <hr>
+
+        <h3>Media Elements</h3>
+        <div class="img-grid">
+            <img src="https://m.media-amazon.com/images/M/MV5BMTU1MzAwODM4OF5BMl5BanBnXkFtZTgwMjA4OTY5NDM@._V1_FMjpg_UX1000_.jpg" alt="Lost in space poster"> <img src="https://placehold.co/200x200" alt="Profile Picture"> <img src="https://placehold.co/200x200?text=Donut" alt="Donut placeholder"> </div>
+
+        <hr>
+
+        <h3>Data Tables</h3>
+        
+        <p>Table 1: Minecraft mob tier list</p> <table>
+          <thead>
+            <tr>
+              <th>Mob</th>
+              <th>Tier</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Zombie</td><td>1</td></tr>
+            <tr><td>Skeleton</td><td>2</td></tr>
+            <tr><td>Creeper</td><td>3</td></tr>
+          </tbody>
+        </table>
+
+        <p>Table 2: Nordic Pokemon Hero Weapons</p> <table>
+          <thead>
+            <tr>
+              <th>Weapon Name</th>
+              <th>Strength</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Spear</td><td>4</td></tr>
+            <tr><td>Mjolnir</td><td>10</td></tr>
+            <tr><td>Sword</td><td>7</td></tr>
+          </tbody>
+        </table>
+
+        <p>Table 3: Nordic Pokemon Villain Weapons</p> <table>
+          <thead>
+            <tr>
+              <th>Weapon Name</th>
+              <th>Strength</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Halberd</td><td>10</td></tr>
+            <tr><td>Scepter</td><td>8</td></tr>
+            <tr><td>Axe</td><td>6</td></tr>
+          </tbody>
+        </table>
+
+    </div>
+
+    <div class="card">
+        <h2>1. The Basics: Clickers</h2>
+        <div class="row">
+            <button onclick="switchText()">Toggle Text</button>
+            <p id="toggle-text">FRONT</p>
+        </div>
+        <div class="row">
+            <button onclick="scream()">Scream</button>
+            <p id="screamer-text">A</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>2. Resource Counter</h2>
+        <p>Gold: <span id="gold-count">0</span> 🪙</p>
+        <div class="row">
+            <button onclick="addGold(1)">Gather (+1)</button>
+            <button onclick="addGold(5)">Mine (+5)</button>
+            <button onclick="multiplyGold(2)">Double (x2)</button>
+            <button onclick="resetGold()">Steal (Reset)</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>3. Pro-Tip Carousel</h2>
+        <p id="tip-text" style="font-size: 1.2rem; font-style: italic;"></p>
+        <div class="row">
+            <button onclick="prevTip()">Previous</button>
+            <button onclick="nextTip()">Next</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>4. Motivation Generator</h2>
+        <button onclick="generateCheers()">Generate Cheers!</button>
+        <ul id="cheer-list"></ul>
+    </div>
+
+    <div class="card">
+        <h2>5. Target Practice</h2>
+        <p>Score: <span id="target-score">0</span></p>
+        <div class="target-area">
+            <button id="moving-target" class="target" onclick="hitTarget()">Hit!</button>
+        </div>
+    </div>
+
+    <script>
+        // --- LEVEL 1 LOGIC ---
+        function switchText() {
+            let elem = document.getElementById("toggle-text");
+            if (elem.innerText === "FRONT") {
+                elem.innerText = "BACK";
+            } else {
+                elem.innerText = "FRONT";
+            }
+        }
+
+        function scream() {
+            let elem = document.getElementById("screamer-text");
+            elem.innerText += "a";
+        }
+
+        // --- LEVEL 2 LOGIC ---
+        let gold = 0;
+        let goldElem = document.getElementById("gold-count");
+
+        function addGold(amount) {
+            gold += amount;
+            goldElem.innerText = gold;
+        }
+
+        function multiplyGold(multiplier) {
+            gold *= multiplier;
+            goldElem.innerText = gold;
+        }
+
+        function resetGold() {
+            gold = 0;
+            goldElem.innerText = gold;
+        }
+
+        // --- LEVEL 3 LOGIC ---
+        let tips = [
+            "Use 'let' to declare variables that change.",
+            "Arrays start at index 0!",
+            "innerHTML is great for adding HTML tags.",
+            "setInterval loops code over time."
+        ];
+        let currentTipIndex = 0;
+        let tipElem = document.getElementById("tip-text");
+
+        function displayTip() {
+            tipElem.innerText = tips[currentTipIndex];
+        }
+
+        function nextTip() {
+            currentTipIndex++;
+            if (currentTipIndex >= tips.length) {
+                currentTipIndex = 0;
+            }
+            displayTip();
+        }
+
+        function prevTip() {
+            currentTipIndex--;
+            if (currentTipIndex < 0) {
+                currentTipIndex = tips.length - 1;
+            }
+            displayTip();
+        }
+        
+        displayTip(); 
+
+        // --- LEVEL 4 LOGIC ---
+        function generateCheers() {
+            let cheerListElem = document.getElementById("cheer-list");
+            cheerListElem.innerHTML = ""; 
+
+            let adjectives = ["Amazing", "Brilliant", "Unstoppable", "Creative"];
+            
+            for (let i = 0; i < adjectives.length; i++) {
+                cheerListElem.innerHTML += "<li>You are an " + adjectives[i] + " coder!</li>";
+            }
+        }
+
+        // --- LEVEL 5 LOGIC ---
+        let score = 0;
+        let targetElem = document.getElementById("moving-target");
+        let scoreElem = document.getElementById("target-score");
+
+        function hitTarget() {
+            score++;
+            scoreElem.innerText = score;
+            targetElem.style.backgroundColor = "#22c55e"; 
+            
+            setTimeout(() => {
+                targetElem.style.backgroundColor = "#ef4444";
+            }, 200);
+        }
+
+        setInterval(() => {
+            let newTop = Math.floor(Math.random() * 160); 
+            let newLeft = Math.floor(Math.random() * 85); 
+
+            targetElem.style.top = newTop + "px";
+            targetElem.style.left = newLeft + "%";
+        }, 1000);
+
+    </script>
+</body>
+</html>

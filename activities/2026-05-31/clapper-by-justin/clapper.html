@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clapper</title>
+    <link rel="stylesheet" href="./clapper.css">
+</head>
+<body>
+<audio id="myAudio">
+    <source src="./Clapping Sound Effects.mp3" type="audio/ogg">
+    <source src="./Clapping Sound Effects.mp3" type="audio/mpeg">
+</audio>
+<script src="./clapper.js"></script>
+    <form class="clapper_bd">
+        <div id="clapper_top" class="clapper_top">
+            <p></p>
+        </div>
+        <div class="clapper_bottom">
+            <p></p>
+        </div>
+        <label for="title">Title_MV.</label>
+        <input id="call" class="title" type="text" name="title">
+        <label for="scene">Scene_Take.</label>
+        <input id="title" class="scene" type="text" name="scene">
+        <label for="take">Take_No.</label>
+        <input id="title" class="take" id="take" type="text" name="take">
+        <div class="buttons">
+            <button onclick="adt(1)" class="add" id="add" type="button" name="add"> CLAP </button>
+            <button onclick="ers(0)" class="erase" id="erase" type="button" name="erase"> RESET </button>
+        </div>
+    </form>
+    <details>
+        <summary class="summary"></summary>
+        <p>
+            <table id="table">
+                <caption class="takes">Takes:</caption>
+                <tr>
+                    <td>0</td>
+                    <td>...</td>
+                    <td contenteditable="true">RE:</td>
+                </tr>
+            </table>
+        </p>
+    </details>
+</body>
+
+<script>
+    const sleep = ms => new Promise(res => setTimeout(res, ms));
+    async function clap(){
+        var clap = document.getElementById("clapper_top")
+        clap.classList.remove("clapper_top")
+        clap.classList.add("clapper_top_end")
+        await sleep(200);
+        clap.classList.remove("clapper_top_end")
+        clap.classList.add("clapper_top")
+    }
+
+    let takecount=0;
+    
+
+    function adt(amnt){
+        debugger;
+        let take_elem = document.getElementById('take');
+        var x = document.getElementById("myAudio");
+        takecount = takecount+amnt;
+        document.getElementById('take');
+        take_elem.value = takecount
+        clap();
+        //tr_add();
+        //x.play();
+    }
+
+    function tr_add(){
+        var tr = document.getElementById('table');
+        var a = document.getElementById('call');
+        var b = document.getElementById('call');
+        tr.innerHTML = tr.innerHTML+`
+                <tr>
+                    <td>`+a+`</td>
+                    <td>`+b+`</td>
+                    <td contenteditable="true">Note:</td>
+                </tr>`;
+
+    }
+
+    function ers(amnt){
+        takecount = takecount*amnt;
+        document.getElementById('take');      
+        take_elem.value = takecount
+    }
+</script>
+</html>
