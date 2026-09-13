@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Three.js Director</title>
+    <style>body { margin: 0; overflow: hidden; background-color: #1a1a1a; } canvas { display: block; }</style>
+</head>
+<body>
+    <script type="importmap">{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }</script>
+    <script type="module">
+        import * as THREE from 'three';
+
+        // 🧑‍🎓 STUDENT AREA
+        let myRing; 
+
+        function setup(scene) {
+
+        }
+
+        function animate() {
+            // We will add motion here next!
+        }
+
+        // 🛑 BOILERPLATE AREA (Do not change)
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 2;
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+        setup(scene);
+        function engineLoop() { requestAnimationFrame(engineLoop); animate(); renderer.render(scene, camera); }
+        engineLoop();
+    </script>
+</body>
+</html>

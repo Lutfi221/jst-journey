@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Title Sequence - Draggable</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #1a1a1a; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    
+    <!-- 1. UPDATED IMPORT MAP: We added a path to load Three.js addons -->
+    <script type="importmap">
+        { 
+            "imports": { 
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            } 
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        // 2. IMPORT ORBITCONTROLS
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // =========================================================
+        // 🧑‍🎓 STUDENT AREA 
+        // =========================================================
+
+        let rings = []; 
+
+        function setup(scene) {
+            const geometry = new THREE.TorusGeometry(1, 0.02, 16, 100);
+            const material = new THREE.MeshBasicMaterial({ color: 0xffbb00, wireframe: true });
+            
+            for (let i = 0; i < 15; i++) {
+                const ring = new THREE.Mesh(geometry, material);
+                
+                const scaleAmount = 1 + (i * 0.4);
+                ring.scale.set(scaleAmount, scaleAmount, scaleAmount);
+                ring.rotation.x = Math.PI / 2.5;
+                
+                scene.add(ring);
+                rings.push(ring);
+            }
+        }
+
+        function animate() {
+            for (let i = 0; i < rings.length; i++) {
+                rings[i].rotation.z += 0.002 * (i + 1);
+                rings[i].rotation.x += Math.sin(Date.now() * 0.001 + i) * 0.001;
+                rings[i].rotation.y += Math.cos(Date.now() * 0.001 + i) * 0.001;
+            }
+        }
+
+        // =========================================================
+        // 🛑 BOILERPLATE AREA 
+        // =========================================================
+        
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // 3. SETUP CONTROLS: Attach the mouse controls to the camera and canvas
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true; // Gives a smooth glide effect when you let go of the mouse
+        controls.dampingFactor = 0.05;
+
+        setup(scene);
+
+        function engineLoop() {
+            requestAnimationFrame(engineLoop);
+            
+            // 4. UPDATE CONTROLS: Required every frame if damping (smooth gliding) is enabled
+            controls.update(); 
+            
+            animate();
+            renderer.render(scene, camera);
+        }
+        
+        engineLoop();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
