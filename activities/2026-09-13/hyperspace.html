@@ -50,7 +50,7 @@
 
         function animate() {
             if (Date.now() - startTime > 1000) {
-                currentSpeed += (TARGET_SPEED - currentSpeed) * 0.02;
+                currentSpeed += (TARGET_SPEED - currentSpeed) * 0.003;
             } else {
                 currentSpeed = 0.005;
             }

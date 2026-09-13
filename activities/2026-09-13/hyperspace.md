@@ -1,8 +1,3 @@
-This is a fantastic way to learn. By breaking the effect down into its core pieces, you'll see how complex CGI is often just simple concepts layered on top of each other.
-
-For this tutorial, you will only be changing the **Student Area** of your code. Keep the rest of your HTML and boilerplate exactly the same!
-
----
 
 ### Step 1: The Lonely Star
 
