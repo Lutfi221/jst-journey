@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collision Demo (AABB)</title>
+<style>
+  :root { --bg:#fff; --fg:#1a1a1a; --muted:#666; --card:#f3f3f0; --line:#ccc;
+          --good-bg:#e3f4e8; --good-fg:#1b6b34; --bad-bg:#fbe5e3; --bad-fg:#a32d2d;
+          --player:#1D9E75; --obstacle:#D85A30; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#1b1b1b; --fg:#eee; --muted:#aaa; --card:#2a2a2a; --line:#444;
+            --good-bg:#183a25; --good-fg:#8fe0a8; --bad-bg:#4a1f1d; --bad-fg:#ff9b96; }
+  }
+  body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--fg); max-width: 720px; margin: 0 auto; padding: 16px; line-height: 1.5; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  p.sub { color: var(--muted); margin: 0 0 12px; font-size: 14px; }
+  .legend { display: flex; gap: 20px; flex-wrap: wrap; margin: 8px 0; font-size: 14px; }
+  .sw { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: -2px; margin-right: 6px; }
+  canvas { width: 100%; border: 1px solid var(--line); border-radius: 12px; touch-action: none; cursor: grab; }
+  .ctls { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px 20px; margin: 12px 0; }
+  .ctl { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  .ctl input { flex: 1; }
+  .ctl .v { min-width: 24px; text-align: right; color: var(--fg); }
+  .row { display: grid; grid-template-columns: 28px 1fr 80px; gap: 10px; align-items: center; margin-top: 10px; font-size: 14px; }
+  .track { position: relative; height: 22px; background: var(--card); border-radius: 4px; }
+  .iv { position: absolute; top: 3px; height: 16px; border-radius: 3px; opacity: .85; }
+  .chip { font-size: 12px; padding: 2px 8px; border-radius: 6px; text-align: center; }
+  .math { font-size: 13px; color: var(--muted); margin: 2px 0 0 38px; font-family: ui-monospace, monospace; }
+  #verdict { margin: 14px 0 8px; padding: 10px 14px; border-radius: 8px; font-weight: 600; }
+  pre { background: var(--card); padding: 10px 12px; border-radius: 8px; font-size: 12.5px; line-height: 1.6; overflow-x: auto; margin: 0; }
+  .note { font-size: 13px; color: var(--muted); margin-top: 10px; }
+</style>
+</head>
+<body>
+<h1>How collision detection works</h1>
+<p class="sub">Two boxes collide only if they overlap on <b>every</b> axis: x, y, and z.</p>
+
+<div class="legend">
+  <span><span class="sw" style="background:var(--player)"></span><b>player</b> = the green box (your cube)</span>
+  <span><span class="sw" style="background:var(--obstacle)"></span><b>obstacle</b> = the orange box (the thing flying at you)</span>
+</div>
+
+<canvas id="cv" width="680" height="280"></canvas>
+<p class="note">Front view (x and y only). Drag either box. Use the z slider to move the obstacle nearer or farther.</p>
+
+<div class="ctls">
+  <label class="ctl">Obstacle width <input type="range" id="w" min="2" max="14" step="1" value="6"><span class="v" id="wv"></span></label>
+  <label class="ctl">Obstacle height <input type="range" id="h" min="2" max="10" step="1" value="5"><span class="v" id="hv"></span></label>
+  <label class="ctl">Obstacle z (depth) <input type="range" id="z" min="-30" max="10" step="1" value="-8"><span class="v" id="zv"></span></label>
+</div>
+
+<div id="rows"></div>
+
+<div id="verdict"></div>
+<pre id="code"></pre>
+<p class="note">Half-size = the distance from a box's center to its edge. The player's half-size is 1 here (0.7 in the game). The obstacle's half-width is its width ÷ 2, and so on.</p>
+
+<script>
+const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+const S = 20, CX = 340, CY = 140;
+const PLAYER_HALF = 1, OBSTACLE_DEPTH = 4;
+const player = { x: -8, y: 0, z: 0 };
+const obstacle = { x: 6, y: 2 };
+const $ = id => document.getElementById(id);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const axes = [['x', 'left–right'], ['y', 'up–down'], ['z', 'near–far']];
+$('rows').innerHTML = axes.map(([k, name]) => `
+  <div class="row"><b>${k}</b>
+    <div class="track"><div class="iv" id="p${k}" style="background:var(--player)"></div><div class="iv" id="o${k}" style="background:var(--obstacle)"></div></div>
+    <div class="chip" id="c${k}"></div></div>
+  <div class="math" id="m${k}"></div>`).join('');
+
+const f = n => (Math.round(n * 10) / 10).toFixed(1);
+const size = () => ({ w: +$('w').value, h: +$('h').value, z: +$('z').value });
+
+function update() {
+  const s = size();
+  $('wv').textContent = s.w; $('hv').textContent = s.h; $('zv').textContent = s.z;
+  // for each axis: [player center, player half, obstacle center, obstacle half, strip min, strip max]
+  const data = {
+    x: [player.x, PLAYER_HALF, obstacle.x, s.w / 2, -16, 16],
+    y: [player.y, PLAYER_HALF, obstacle.y, s.h / 2, -7, 7],
+    z: [player.z, PLAYER_HALF, s.z, OBSTACLE_DEPTH / 2, -35, 15],
+  };
+  const hits = {};
+  for (const [k] of axes) {
+    const [pc, ph, oc, oh, lo, hi] = data[k];
+    const dist = Math.abs(pc - oc), limit = ph + oh, hit = dist < limit;
+    hits[k] = hit;
+    const place = (id, c, h) => { const e = $(id); e.style.left = (c - h - lo) / (hi - lo) * 100 + '%'; e.style.width = 2 * h / (hi - lo) * 100 + '%'; };
+    place('p' + k, pc, ph); place('o' + k, oc, oh);
+    const chip = $('c' + k);
+    chip.textContent = hit ? 'overlap' : 'gap';
+    chip.style.background = hit ? 'var(--bad-bg)' : 'var(--good-bg)';
+    chip.style.color = hit ? 'var(--bad-fg)' : 'var(--good-fg)';
+    $('m' + k).textContent = `|player ${f(pc)} − obstacle ${f(oc)}| = ${f(dist)}  ${hit ? '<' : '>='}  ${f(ph)} + ${f(oh)} = ${f(limit)}`;
+  }
+  const all = hits.x && hits.y && hits.z;
+  const v = $('verdict');
+  v.textContent = all ? 'Collision: all three axes overlap' : 'No collision: at least one axis has a gap';
+  v.style.background = all ? 'var(--bad-bg)' : 'var(--good-bg)';
+  v.style.color = all ? 'var(--bad-fg)' : 'var(--good-fg)';
+  $('code').textContent =
+`const hitX = Math.abs(player.x - obstacle.x) < playerHalfW + obstacleHalfW;  // ${hits.x}
+const hitY = Math.abs(player.y - obstacle.y) < playerHalfH + obstacleHalfH;  // ${hits.y}
+const hitZ = Math.abs(player.z - obstacle.z) < playerHalfD + obstacleHalfD;  // ${hits.z}
+
+if (hitX && hitY && hitZ) { /* collision! */ }                              // ${all}`;
+  draw(s, all);
+}
+
+function draw(s, all) {
+  ctx.clearRect(0, 0, 680, 280);
+  ctx.strokeStyle = css('--line'); ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, CY); ctx.lineTo(680, CY); ctx.moveTo(CX, 0); ctx.lineTo(CX, 280); ctx.stroke();
+  const ox = CX + obstacle.x * S, oy = CY - obstacle.y * S;
+  ctx.fillStyle = all ? '#E24B4A77' : '#D85A3055'; ctx.strokeStyle = all ? '#E24B4A' : '#D85A30'; ctx.lineWidth = 2;
+  ctx.fillRect(ox - s.w * S / 2, oy - s.h * S / 2, s.w * S, s.h * S);
+  ctx.strokeRect(ox - s.w * S / 2, oy - s.h * S / 2, s.w * S, s.h * S);
+  const px = CX + player.x * S, py = CY - player.y * S;
+  ctx.fillStyle = '#1D9E7588'; ctx.strokeStyle = '#1D9E75';
+  ctx.fillRect(px - PLAYER_HALF * S, py - PLAYER_HALF * S, PLAYER_HALF * 2 * S, PLAYER_HALF * 2 * S);
+  ctx.strokeRect(px - PLAYER_HALF * S, py - PLAYER_HALF * S, PLAYER_HALF * 2 * S, PLAYER_HALF * 2 * S);
+  ctx.fillStyle = css('--fg'); ctx.font = '13px sans-serif';
+  ctx.fillText('player', px - PLAYER_HALF * S, py - PLAYER_HALF * S - 6);
+  ctx.fillText('obstacle', ox - s.w * S / 2, oy - s.h * S / 2 - 6);
+}
+
+let drag = null;
+const pt = e => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * 680 / r.width, (e.clientY - r.top) * 280 / r.height]; };
+cv.addEventListener('pointerdown', e => {
+  const [mx, my] = pt(e), s = size();
+  const inO = Math.abs(mx - (CX + obstacle.x * S)) < s.w * S / 2 && Math.abs(my - (CY - obstacle.y * S)) < s.h * S / 2;
+  const inP = Math.abs(mx - (CX + player.x * S)) < PLAYER_HALF * S && Math.abs(my - (CY - player.y * S)) < PLAYER_HALF * S;
+  drag = inP ? player : inO ? obstacle : null;
+  if (drag) { cv.setPointerCapture(e.pointerId); cv.style.cursor = 'grabbing'; }
+});
+cv.addEventListener('pointermove', e => {
+  if (!drag) return;
+  const [mx, my] = pt(e);
+  drag.x = Math.max(-16, Math.min(16, Math.round((mx - CX) / S * 2) / 2));
+  drag.y = Math.max(-7, Math.min(7, Math.round((CY - my) / S * 2) / 2));
+  update();
+});
+cv.addEventListener('pointerup', () => { drag = null; cv.style.cursor = 'grab'; });
+['w', 'h', 'z'].forEach(i => $(i).addEventListener('input', update));
+update();
+</script>
+</body>
+</html>

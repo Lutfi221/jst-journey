@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Student Playground</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #1a1a1a; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    
+    <script type="importmap">
+        { 
+            "imports": { 
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            } 
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // =========================================================
+        // 🧑‍🎓 STUDENT AREA 
+        // Focus only on these two functions!
+        // =========================================================
+
+        // Declare your variables up here so both functions can see them!
+        const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+        const material = new THREE.MeshBasicMaterial( { color: 0x00ff00, wireframe : true} );
+        const cube = new THREE.Mesh( geometry, material );
+
+        let enemies=[];
+        let pressing_up = false;
+        let pressing_down = false;
+        let pressing_left = false;
+        let pressing_right = false;
+        for (let s = 0; s < 11; s++) {
+            const set_y = Math.floor(Math.random() * 10) + 1;
+            const set_x = Math.floor(Math.random() * 10) + 1;
+            const geometry_enemy_cube = new THREE.CubeGeometry(10, 3, 100, 16);
+            const material_enemy_cube  = new THREE.MeshBasicMaterial({ color: 0xff3300, wireframe: true });
+            const enemy_cube  = new THREE.Mesh(geometry_enemy_cube , material_enemy_cube );
+            enemy_cube.position.set(set_x, set_y - 15, 0);
+            { enemies.push(enemy_cube ); }}
+        // 1. SETUP: This runs exactly once at the start.
+        function setup(scene) {
+            scene.add( cube );
+            // Create your geometry, materials, and meshes here.
+            // Don't forget to use scene.add() to put them on the stage!
+
+            window.addEventListener('keydown', (event) => {
+                if (event.key === 'ArrowDown') pressing_down = true;
+                if (event.key === 'ArrowUp') pressing_up = true;
+                if (event.key === 'ArrowLeft') pressing_left = true;
+                if (event.key === 'ArrowRight') pressing_right = true;
+            });
+            window.addEventListener('keyup', (event) => {
+                if (event.key === 'ArrowDown') pressing_down = false;
+                if (event.key === 'ArrowUp') pressing_up = false;
+                if (event.key === 'ArrowLeft') pressing_left = false;
+                if (event.key === 'ArrowRight') pressing_right = false;
+            });
+            scene.add(cube);
+            for (let y = 0; y < 100; y++) { scene.add(enemies[y]) };
+        }
+
+        // 2. ANIMATE: This runs every single frame.
+        function animate() {
+            
+            // Add your rotation, movement, and logic here.
+            
+            
+            if (pressing_up) {
+                cube.position.y = cube.position.y + 0.25;
+            }
+            if (pressing_down) {
+                cube.position.y = cube.position.y - 0.25;
+            }
+            if (pressing_left) {
+                cube.position.x = cube.position.x - 0.25;
+            }
+            if (pressing_right) {
+                cube.position.x = cube.position.x + 0.25;
+            }   
+        }
+
+
+        // =========================================================
+        // 🛑 BOILERPLATE AREA 
+        // Engine setup and complex math are hidden down here. 
+        // You do not need to change anything below this line!
+        // =========================================================
+        
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Adds mouse controls so you can click and drag to look around
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true; 
+
+        // Run the student's setup function and hand it the scene
+        setup(scene);
+
+        // The main engine loop
+        function engineLoop() {
+            requestAnimationFrame(engineLoop);
+            
+            controls.update(); // Keeps the mouse controls smooth
+            
+            // Run the student's animation instructions
+            animate();
+            
+            // Draw everything to the screen
+            renderer.render(scene, camera);
+        }
+        
+        // Start the engine
+        engineLoop();
+
+        // Keep everything proportional if the window is resized
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

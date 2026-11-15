@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Obliteration Demo</title>
+<style>
+  :root { --bg:#fff; --fg:#1a1a1a; --muted:#666; --card:#f3f3f0; --line:#ccc; --accent:#D85A30; --hl:#fff3b0; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#1b1b1b; --fg:#eee; --muted:#aaa; --card:#2a2a2a; --line:#444; --hl:#5a4b00; }
+  }
+  body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--fg); max-width: 720px; margin: 0 auto; padding: 16px; line-height: 1.5; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  h2 { font-size: 16px; margin: 18px 0 6px; }
+  p.sub, .note { color: var(--muted); font-size: 14px; margin: 0 0 12px; }
+  canvas { width: 100%; border: 1px solid var(--line); border-radius: 12px; cursor: pointer; background: var(--card); }
+  .ctls { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px 20px; margin: 12px 0; }
+  .ctl { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  .ctl input { flex: 1; }
+  .ctl .v { min-width: 28px; text-align: right; color: var(--fg); }
+  button { font: inherit; font-size: 14px; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer; }
+  button:hover { background: var(--card); }
+  .stats { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .stats b { color: var(--fg); }
+  pre { background: var(--card); padding: 10px 12px; border-radius: 8px; font-size: 12.5px; line-height: 1.7; overflow-x: auto; margin: 0; }
+  .ln { display: block; padding: 0 4px; border-radius: 3px; }
+  .ln.on { background: var(--hl); }
+  #tracked { font-family: ui-monospace, monospace; font-size: 13px; background: var(--card); border-radius: 8px; padding: 8px 12px; margin-top: 8px; }
+</style>
+</head>
+<body>
+<h1>How obliteration works</h1>
+<p class="sub">An obstacle doesn't "explode". We delete it and spawn many small <b>shards</b> that fly outward, shrink, and then get deleted too.</p>
+
+<canvas id="cv" width="680" height="300"></canvas>
+<p class="note">Click the canvas to place a new obstacle and obliterate it, or press the button.</p>
+
+<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+  <button id="go">Obliterate!</button>
+  <button id="slow">Slow motion: off</button>
+</div>
+
+<div class="ctls">
+  <label class="ctl">Shard count <input type="range" id="n" min="4" max="80" value="20"><span class="v" id="nv"></span></label>
+  <label class="ctl">Max speed <input type="range" id="sp" min="2" max="40" value="20"><span class="v" id="spv"></span></label>
+  <label class="ctl">Life (seconds) <input type="range" id="lf" min="0.3" max="3" step="0.1" value="1"><span class="v" id="lfv"></span></label>
+</div>
+
+<div class="stats">
+  <span>Shards alive: <b id="alive">0</b></span>
+  <span>Phase: <b id="phase">waiting</b></span>
+</div>
+<div id="tracked">Tracking one shard (the one with the white outline)…</div>
+
+<h2>The code, step by step</h2>
+<p class="note">The highlighted line is the one doing work on this frame.</p>
+<pre id="code"></pre>
+
+<script>
+const cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+const $ = id => document.getElementById(id);
+const OB = { x: 340, y: 150, w: 120, h: 80 };
+let obstacle = { ...OB, alive: true };
+let shards = [], slow = false, tracked = null, lastFlash = 0;
+
+const lines = [
+  '// 1. SPAWN: runs once, when the obstacle is hit',
+  'for (let i = 0; i < count; i++) {',
+  '  shards.push({',
+  '    x: obstacle.x, y: obstacle.y,        // start where the obstacle was',
+  '    vx: (Math.random() - 0.5) * speed,   // random speed left/right',
+  '    vy: (Math.random() - 0.5) * speed,   // random speed up/down',
+  '    life: 1,                              // 1 → 0',
+  '  });',
+  '}',
+  'removeObstacle();                         // 3. the big box is gone',
+  '',
+  '// 2. UPDATE: runs every frame, for every shard',
+  'shard.life -= dt;                         // count down',
+  'shard.x += shard.vx * dt;                 // fly outward',
+  'shard.y += shard.vy * dt;',
+  'shard.size = shard.life * maxSize;        // shrink to nothing',
+  '',
+  '// 4. CLEANUP: remove dead shards',
+  'shards = shards.filter(s => s.life > 0);',
+];
+const codeEl = $('code');
+codeEl.innerHTML = lines.map((l, i) => `<span class="ln" id="L${i}">${l.replace(/</g, '&lt;') || ' '}</span>`).join('');
+function highlight(ids) {
+  lines.forEach((_, i) => $('L' + i).classList.toggle('on', ids.includes(i)));
+}
+
+function obliterate() {
+  if (!obstacle.alive) obstacle = { ...OB, alive: true };
+  const count = +$('n').value, speed = +$('sp').value * 14, life = +$('lf').value;
+  for (let i = 0; i < count; i++) {
+    shards.push({
+      x: obstacle.x + (Math.random() - 0.5) * obstacle.w,
+      y: obstacle.y + (Math.random() - 0.5) * obstacle.h,
+      vx: (Math.random() - 0.5) * speed,
+      vy: (Math.random() - 0.5) * speed,
+      life: 1, maxLife: life, rot: 0,
+      size: 16,
+    });
+  }
+  tracked = shards[shards.length - 1];
+  obstacle.alive = false;
+  lastFlash = performance.now();
+  $('phase').textContent = 'spawned shards';
+}
+
+let prev = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame);
+  let dt = Math.min((now - prev) / 1000, 0.05); prev = now;
+  if (slow) dt *= 0.15;
+
+  for (const s of shards) {
+    s.life -= dt / s.maxLife;
+    s.x += s.vx * dt;
+    s.y += s.vy * dt;
+    s.rot += 5 * dt;
+  }
+  shards = shards.filter(s => s.life > 0);
+  if (tracked && tracked.life <= 0) tracked = null;
+
+  // highlight which part of the code is active
+  const flash = now - lastFlash < 400;
+  if (flash) highlight([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  else if (shards.length) highlight([12, 13, 14, 15]);
+  else if (!obstacle.alive) highlight([17, 18]);
+  else highlight([]);
+  $('phase').textContent = flash ? '1. spawn + remove obstacle' : shards.length ? '2. update every frame' : obstacle.alive ? 'waiting' : 'done: all shards removed';
+  $('alive').textContent = shards.length;
+  $('tracked').textContent = tracked
+    ? `shard: x=${tracked.x.toFixed(0)}  y=${tracked.y.toFixed(0)}  vx=${tracked.vx.toFixed(0)}  vy=${tracked.vy.toFixed(0)}  life=${tracked.life.toFixed(2)}  size=${(tracked.life * 16).toFixed(1)}`
+    : 'No shard is being tracked right now. Obliterate something.';
+
+  draw();
+}
+
+function draw() {
+  ctx.clearRect(0, 0, 680, 300);
+  if (obstacle.alive) {
+    ctx.fillStyle = '#D85A30'; ctx.strokeStyle = '#993C1D'; ctx.lineWidth = 2;
+    ctx.fillRect(obstacle.x - obstacle.w / 2, obstacle.y - obstacle.h / 2, obstacle.w, obstacle.h);
+    ctx.strokeRect(obstacle.x - obstacle.w / 2, obstacle.y - obstacle.h / 2, obstacle.w, obstacle.h);
+  }
+  for (const s of shards) {
+    const size = Math.max(s.life, 0.01) * 16;
+    ctx.save();
+    ctx.translate(s.x, s.y); ctx.rotate(s.rot);
+    ctx.fillStyle = '#D85A30';
+    ctx.fillRect(-size / 2, -size / 2, size, size);
+    if (s === tracked) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.strokeRect(-size / 2 - 2, -size / 2 - 2, size + 4, size + 4); }
+    ctx.restore();
+  }
+}
+
+$('go').onclick = obliterate;
+cv.addEventListener('click', e => {
+  const r = cv.getBoundingClientRect();
+  obstacle = { ...OB, x: (e.clientX - r.left) * 680 / r.width, y: (e.clientY - r.top) * 300 / r.height, alive: true };
+  obliterate();
+});
+$('slow').onclick = () => { slow = !slow; $('slow').textContent = 'Slow motion: ' + (slow ? 'on' : 'off'); };
+const sync = () => { $('nv').textContent = $('n').value; $('spv').textContent = $('sp').value; $('lfv').textContent = (+$('lf').value).toFixed(1); };
+['n', 'sp', 'lf'].forEach(i => $(i).addEventListener('input', sync));
+sync();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

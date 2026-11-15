@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Mini Game</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #1a1a1a; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    
+    <script type="importmap">
+        { 
+            "imports": { 
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            } 
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // =========================================================
+        // 🧑‍🎓 STUDENT AREA 
+        // =========================================================
+
+        let mainScene; // We save the scene here so we can spawn things into it later
+        let player;
+        
+        let lasers = [];  // Hangar for our laser beams
+        let enemies = []; // Hangar for the enemy spheres
+        
+        // An object to track which keys are currently being pressed
+        let keys = { up: false, down: false };
+
+        function setup(scene) {
+            mainScene = scene;
+
+            // 1. Create the Player (A Pyramid / Cone)
+            // A cone with 4 radial segments looks exactly like a pyramid!
+            const geometry = new THREE.ConeGeometry(0.5, 1.5, 4);
+            const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+            player = new THREE.Mesh(geometry, material);
+            
+            // Point the tip of the pyramid to the right
+            player.rotation.z = -Math.PI / 2;
+            
+            // Move the player to the left side of the screen
+            player.position.x = -4; 
+            scene.add(player);
+
+            // 2. Listen for key presses
+            window.addEventListener('keydown', (event) => {
+                if (event.key === 'ArrowUp') keys.up = true;
+                if (event.key === 'ArrowDown') keys.down = true;
+                
+                // If they press space, fire!
+                if (event.code === 'Space') {
+                    shootLaser();
+                }
+            });
+
+            // 3. Listen for key releases (so we stop moving)
+            window.addEventListener('keyup', (event) => {
+                if (event.key === 'ArrowUp') keys.up = false;
+                if (event.key === 'ArrowDown') keys.down = false;
+            });
+        }
+
+        // Helper Function: Fires a laser
+        function shootLaser() {
+            const geo = new THREE.BoxGeometry(0.5, 0.1, 0.1);
+            const mat = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Red laser
+            const laser = new THREE.Mesh(geo, mat);
+            
+            // 💡 Copy the player's exact X,Y,Z position so the laser shoots from the ship!
+            laser.position.copy(player.position);
+            
+            mainScene.add(laser);
+            lasers.push(laser); // Add it to our array
+        }
+
+        // Helper Function: Creates a new enemy
+        function spawnEnemy() {
+            // Random size between 0.2 and 0.8
+            const size = Math.random() * 0.6 + 0.2;
+            const geo = new THREE.SphereGeometry(size, 8, 8);
+            
+            // Random color
+            const mat = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff, wireframe: true });
+            const enemy = new THREE.Mesh(geo, mat);
+            
+            // Start on the right side of the screen
+            enemy.position.x = 6;
+            // Pick a random Y height between -3 and +3
+            enemy.position.y = (Math.random() - 0.5) * 6;
+            
+            // Save custom data directly into the mesh so we can use it later
+            enemy.userData.speed = Math.random() * 0.05 + 0.02; // Random speed
+            enemy.userData.radius = size; // Save size for collision detection
+            
+            mainScene.add(enemy);
+            enemies.push(enemy); // Add it to our array
+        }
+
+        function animate() {
+            // --- PLAYER MOVEMENT ---
+            // Move up/down, but don't let them fly off the top or bottom of the screen
+            if (keys.up && player.position.y < 3) player.position.y += 0.1;
+            if (keys.down && player.position.y > -3) player.position.y -= 0.1;
+
+            // --- SPAWN ENEMIES ---
+            // Math.random() gives a number between 0 and 1. 
+            // So `< 0.02` means there is a 2% chance to spawn an enemy every single frame.
+            if (Math.random() < 0.02) {
+                spawnEnemy();
+            }
+
+            // --- MOVE LASERS ---
+            // 🚨 Notice we loop BACKWARDS (from end to 0). See explanation below!
+            for (let i = lasers.length - 1; i >= 0; i--) {
+                let laser = lasers[i];
+                laser.position.x += 0.2; // Move right
+                
+                // If it flies off the right side of the screen, delete it to save memory
+                if (laser.position.x > 6) {
+                    mainScene.remove(laser); // Remove from visual scene
+                    lasers.splice(i, 1);     // Remove from our array
+                }
+            }
+
+            // --- MOVE ENEMIES & CHECK COLLISIONS ---
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                let enemy = enemies[i];
+                enemy.position.x -= enemy.userData.speed; // Move left
+                enemy.rotation.x += 0.02; // Spin it for fun
+                
+                // If enemy flies past the left side of the screen, delete it
+                if (enemy.position.x < -6) {
+                    mainScene.remove(enemy);
+                    enemies.splice(i, 1);
+                    continue; // Skip the rest of this loop since the enemy is gone
+                }
+
+                // Collision Detection! Check this enemy against EVERY laser on screen.
+                for (let j = lasers.length - 1; j >= 0; j--) {
+                    let laser = lasers[j];
+                    
+                    // .distanceTo is a built-in Three.js trick to measure distance between two objects
+                    let distance = laser.position.distanceTo(enemy.position);
+                    
+                    // If the distance is smaller than the enemy's size, it's a hit!
+                    if (distance < enemy.userData.radius) {
+                        
+                        // Destroy Enemy
+                        mainScene.remove(enemy);
+                        enemies.splice(i, 1);
+                        
+                        // Destroy Laser
+                        mainScene.remove(laser);
+                        lasers.splice(j, 1);
+                        
+                        break; // The enemy is dead, so stop checking lasers against it
+                    }
+                }
+            }
+        }
+
+        // =========================================================
+        // 🛑 BOILERPLATE AREA 
+        // =========================================================
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true; 
+
+        setup(scene);
+
+        function engineLoop() {
+            requestAnimationFrame(engineLoop);
+            controls.update(); 
+            animate();
+            renderer.render(scene, camera);
+        }
+        
+        engineLoop();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

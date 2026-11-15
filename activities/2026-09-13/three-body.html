@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Three.js Three-Body with Trails</title>
+    <style>body { margin: 0; overflow: hidden; background-color: #050505; } canvas { display: block; }</style>
+</head>
+<body>
+    <script type="importmap">
+        { 
+            "imports": { 
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            } 
+        }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // =========================================================
+        // 🧑‍🎓 STUDENT AREA 
+        // =========================================================
+
+        let bodies = []; 
+
+        function setup(scene) {
+            const colors = [0xff0044, 0x00ffcc, 0xffcc00];
+
+            for (let i = 0; i < 3; i++) {
+                const geometry = new THREE.SphereGeometry(1, 32, 32);
+                const material = new THREE.MeshBasicMaterial({ color: colors[i] });
+                const mesh = new THREE.Mesh(geometry, material);
+                
+                mesh.position.x = (Math.random() - 0.5) * 20;
+                mesh.position.y = (Math.random() - 0.5) * 20;
+                mesh.position.z = (Math.random() - 0.5) * 20;
+                
+                scene.add(mesh);
+
+                const trailMaterial = new THREE.LineBasicMaterial({ color: colors[i] });
+                const trailGeometry = new THREE.BufferGeometry();
+                const trailLine = new THREE.Line(trailGeometry, trailMaterial);
+                scene.add(trailLine); 
+
+                let planet = {
+                    mesh: mesh,
+                    mass: 100 + Math.random() * 100, 
+                    vx: (Math.random() - 0.5) * 0.1,
+                    vy: (Math.random() - 0.5) * 0.1,
+                    vz: (Math.random() - 0.5) * 0.1,
+                    trail: [],
+                    trailLine: trailLine
+                };
+
+                bodies.push(planet);
+            }
+        }
+
+        function animate() {
+            // 1. Calculate Gravity
+            for (let i = 0; i < bodies.length; i++) {
+                for (let j = 0; j < bodies.length; j++) {
+                    if (i === j) continue; 
+
+                    let planetA = bodies[i];
+                    let planetB = bodies[j];
+
+                    let dx = planetB.mesh.position.x - planetA.mesh.position.x;
+                    let dy = planetB.mesh.position.y - planetA.mesh.position.y;
+                    let dz = planetB.mesh.position.z - planetA.mesh.position.z;
+
+                    let distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
+                    if (distance < 2) distance = 2; 
+
+                    let pullStrength = (0.0005 * planetA.mass * planetB.mass) / (distance * distance);
+                    let acceleration = pullStrength / planetA.mass;
+
+                    planetA.vx += (dx / distance) * acceleration;
+                    planetA.vy += (dy / distance) * acceleration;
+                    planetA.vz += (dz / distance) * acceleration;
+                }
+            }
+
+            // 2. Apply Velocity and Update Trails
+            for (let i = 0; i < bodies.length; i++) {
+                let planet = bodies[i];
+                
+                // Move planet
+                planet.mesh.position.x += planet.vx;
+                planet.mesh.position.y += planet.vy;
+                planet.mesh.position.z += planet.vz;
+
+                // Record position
+                const currentPosition = new THREE.Vector3(
+                    planet.mesh.position.x, 
+                    planet.mesh.position.y, 
+                    planet.mesh.position.z
+                );
+                planet.trail.push(currentPosition);
+
+                // Cap the trail length (try changing 150 to 500 for massive tails!)
+                if (planet.trail.length > 150) {
+                    planet.trail.shift(); 
+                }
+
+                // Draw the line
+                planet.trailLine.geometry.setFromPoints(planet.trail);
+            }
+        }
+
+        // =========================================================
+        // 🛑 BOILERPLATE AREA 
+        // =========================================================
+        
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 40;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        setup(scene);
+
+        function engineLoop() {
+            requestAnimationFrame(engineLoop);
+            controls.update(); 
+            animate();
+            renderer.render(scene, camera);
+        }
+        
+        engineLoop();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
