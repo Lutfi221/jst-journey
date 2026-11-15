@@ -1,8 +1,18 @@
-/.venv/
+# OS
+.DS_Store
 
+# Python
+/.venv/
+__pycache__/
+*.pyc
+.mypy_cache/
 *.ipynb
+
+# Node
+node_modules/
+dist/
+
+# Local / private
 /prompting/
 hp.txt
 repomix-output.xml
-activities/2025-06-27
-*.DS_STORE
